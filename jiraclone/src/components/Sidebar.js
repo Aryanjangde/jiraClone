@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import CreateIssue from './CreateIssue';
+import Image from 'next/image';
 // import jiraSvg from "@images/jira-1.svg"
 const Sidebar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
