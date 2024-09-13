@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  MANAGER
+  DEVELOPER
+}
+
+model User {
+  id        Int      @id @default(autoincrement()) // Primary key
+  email     String   @unique                      // Unique email for each user
+  name      String                               // Name of the user
+  role      Role     @default(DEVELOPER)          // Role: either MANAGER or DEVELOPER
+  projects  Project[]                             // One-to-many relation with projects (Manager only)
+  tasks     Task[]                                // One-to-many relation with tasks (Developer)
+}
+
+model Project {
+  id        Int      @id @default(autoincrement()) // Primary key
+  name      String                               // Name of the project
+  manager   User     @relation(fields: [managerId], references: [id]) // Manager of the project
+  managerId Int                                  // Foreign key to User (Manager)
+  tasks     Task[]                               // One-to-many relation with tasks in the project
+}
+
+model Task {
+  id         Int       @id @default(autoincrement()) // Primary key
+  title      String                                 // Title of the task
+  description String?                               // Optional description of the task
+  project    Project   @relation(fields: [projectId], references: [id]) // Task belongs to a project
+  projectId  Int                                     // Foreign key to the project
+  assignedTo User      @relation(fields: [userId], references: [id])   // Task is assigned to a developer
+  userId     Int                                     // Foreign key to User (Developer)
+  status     TaskStatus @default(TODO)             // Task status: TODO, IN_PROGRESS, DONE
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+}
+
+
