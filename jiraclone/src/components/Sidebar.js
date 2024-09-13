@@ -17,7 +17,7 @@ const Sidebar = () => {
         <div className="flex-1 p-4 gap-3">
           {/* Sidebar content */}
           <div>
-          <Image src="/images/jiraLogo.svg" alt="My Icon" className='w-16'/>
+          <Image src="/images/jiraLogo.svg" alt="My Icon" width={250} height={250}/>
           </div>
           <div>
           <button
