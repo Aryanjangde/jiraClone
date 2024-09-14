@@ -9,7 +9,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -30,6 +30,7 @@ model User {
 model Project {
   id        Int      @id @default(autoincrement()) // Primary key
   name      String                               // Name of the project
+  description String
   manager   User     @relation(fields: [managerId], references: [id]) // Manager of the project
   managerId Int                                  // Foreign key to User (Manager)
   tasks     Task[]                               // One-to-many relation with tasks in the project
