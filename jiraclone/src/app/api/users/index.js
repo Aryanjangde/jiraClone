@@ -17,7 +17,7 @@ export default async function handler(req, res) {
       } catch (error) {
         res.status(400).json({ error: 'Failed to create user' })
       }
-    } else {
+    } else {p
       res.setHeader('Allow', ['GET', 'POST'])
       res.status(405).end(`Method ${req.method} Not Allowed`)
     }

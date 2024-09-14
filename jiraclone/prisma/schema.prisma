@@ -10,7 +10,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
+  url      = "mysql://admin:aryankarthik123@database-1.c90g6wsuov99.ap-south-1.rds.amazonaws.com:3333/database-1"
 }
 
 enum Role {

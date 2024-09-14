@@ -12,12 +12,11 @@ const Sidebar = () => {
   return (
     <div className="flex">
       {/* Sidebar */}
-      <aside className="w-24 h-screen bg-blue-300 text-white flex flex-col transition">
-        
-        <div className="flex-1 p-4 gap-3">
+      <nav className="w-screen h-24 bg-blue-300 text-white flex transition">
+        <div className="p-4 gap-3 flex">
           {/* Sidebar content */}
           <div>
-          <Image src="/images/jiraLogo.svg" alt="My Icon" width={250} height={250}/>
+          <Image src="/images/jiraLogo.svg" alt="My Icon" className='' width={60} height={60}/>
           </div>
           <div>
           <button
@@ -29,7 +28,7 @@ const Sidebar = () => {
           </div>
           {/* Add more sidebar items here */}
         </div>
-      </aside>
+      </nav>
 
       {/* Modal */}
       {isModalOpen && (
