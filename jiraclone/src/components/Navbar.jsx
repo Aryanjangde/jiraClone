@@ -8,7 +8,7 @@ import SearchBar from "./SearchBar";
 
 const SidebarNavbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [projectId, setProjectId] = useState(1)
   const [projectOption, setProjectOption] = useState([]);
   
   useEffect(() => {
@@ -16,7 +16,6 @@ const SidebarNavbar = () => {
       try {
         const res = await fetch('http://localhost:3000/api/projects');
         const json = await res.json();
-        console.log("API Response:", json.data);
         setProjectOption(json.data);
       } catch (err) {
         console.error('Error fetching projects:', err);
@@ -39,10 +38,15 @@ const SidebarNavbar = () => {
           
 
           {/* Project Selector */}
-          <select className="bg-white text-blue-700 py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+          <select className="bg-white text-blue-700 py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+          onChange={(e)=>{
+            setProjectId(Number(e.target.value) + 1)
+          }}
+          
+          >
           {projectOption && projectOption.length > 0 ? (
             projectOption.map((name, index) => (
-            <option key = {index} value={name}>
+            <option key = {index} value = {index} >
               {name}
             </option>
   ))
@@ -77,7 +81,7 @@ const SidebarNavbar = () => {
       </nav>
 
       {/* Modal */}
-      {isModalOpen && <CreateIssue toggleModal={toggleModal} />}
+      {isModalOpen && <CreateIssue toggleModal={toggleModal} projectId = {projectId} />}
     </div>
   );
 };
