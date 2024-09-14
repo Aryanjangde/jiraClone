@@ -1,12 +1,12 @@
 // import Image from "next/image";
 // import CreateIssue from "../components/CreateIssue"
-import Sidebar from "../components/Sidebar"
-import Login from '../components/Login'
+import TaskBoard from "../components/task-board"
 export default function Home() {
   return (
     <div>
-      <Login/>
-      <Sidebar/>
+      {/* <Login/> */}
+      {/* <SearchBar/> */}
+      <TaskBoard/>
     </div>
   );
 }
