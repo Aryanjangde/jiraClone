@@ -21,7 +21,7 @@ export default function CreateIssue({ toggleModal, projectId}) {
       assignees 
     }
     const json = JSON.stringify(obj)
-    const res = await fetch(`http://localhost:3000/api/projects/${projectId}/tasks`, {
+    const res = await fetch(`${process.env.BASE_URL}api/projects/${projectId}/tasks`, {
       method: "POST",
       body: json
     })
