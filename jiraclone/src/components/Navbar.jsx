@@ -47,7 +47,7 @@ const SidebarNavbar = () => {
             </option>
   ))
 ) : (
-  <option value="">No projects available</option>
+  <option value="">Loading...</option>
 )}
           </select>
           <button

@@ -7,13 +7,14 @@ export default function CreateIssue({ toggleModal }) {
           {/* Issue Type Dropdown */}
           <label className="block mb-2 text-sm font-medium text-gray-700">Issue Type</label>
           <select className="w-full p-2 mb-4 border border-gray-300 rounded">
-            <option value="Task">Task</option>
-            <option value="Bug">Bug</option>
-            <option value="Issue">Issue</option>
+            <option value="FEATURE">Feature</option>
+            <option value="TASK">Task</option>
+            <option value="BUG">Bug</option>
+            <option value="ISSUE">Issue</option>
           </select>
   
           {/* Short Summary */}
-          <label className="block mb-2 text-sm font-medium text-gray-700">Short Summary</label>
+          <label className="block mb-2 text-sm font-medium text-gray-700">Title</label>
           <input 
             type="text" 
             className="w-full p-2 mb-4 border border-gray-300 rounded" 
