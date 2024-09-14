@@ -1,5 +1,5 @@
-import React from 'react'
-
+// import React from 'react'
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const TaskCard = ({ task }) => (
   <div className="bg-white p-4 rounded-lg shadow-md mb-4 border border-blue-100">
     <h3 className="font-semibold text-lg mb-2 text-blue-800">{task.name}</h3>
@@ -47,6 +47,7 @@ export default function TaskBoard() {
           <div key={section.title} className="flex-1 bg-white p-6 rounded-lg shadow-lg border border-blue-200 flex flex-col">
             <h2 className="text-xl font-bold mb-4 text-blue-800 pb-2 border-b border-blue-200">{section.title}</h2>
             <div className="overflow-y-auto flex-grow">
+
               {section.tasks.map((task) => (
                 <TaskCard key={task.id} task={task} />
               ))}

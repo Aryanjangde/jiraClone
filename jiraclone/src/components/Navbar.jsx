@@ -1,12 +1,14 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import CreateIssue from "./CreateIssue";
-import Image from "next/image";
+
 import SearchBar from "./SearchBar";
 
 const SidebarNavbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [projectOption, setProjectOption] = useState(["jira-development"]);
 
   const toggleModal = () => setIsModalOpen(!isModalOpen);
