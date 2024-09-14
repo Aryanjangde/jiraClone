@@ -1,6 +1,6 @@
 "use client";
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import CreateIssue from "./CreateIssue";
 
@@ -9,8 +9,24 @@ import SearchBar from "./SearchBar";
 const SidebarNavbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [projectOption, setProjectOption] = useState(["jira-development"]);
+  const [projectOption, setProjectOption] = useState([]);
+  
+  useEffect(() => {
+    const getProjects = async () => {
+      try {
+        const res = await fetch('http://localhost:3000/api/projects');
+        const json = await res.json();
+        console.log("API Response:", json.data);
+        setProjectOption(json.data);
+      } catch (err) {
+        console.error('Error fetching projects:', err);
+      }
+    };
 
+    getProjects()
+  }, []); // Empty dependency array means this effect runs once when the component mounts
+
+  
   const toggleModal = () => setIsModalOpen(!isModalOpen);
 
   return (
@@ -24,11 +40,15 @@ const SidebarNavbar = () => {
 
           {/* Project Selector */}
           <select className="bg-white text-blue-700 py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
-            {projectOption.map((item, index) => (
-              <option key={index} value={item}>
-                {item}
-              </option>
-            ))}
+          {projectOption && projectOption.length > 0 ? (
+            projectOption.map((name, index) => (
+            <option key = {index} value={name}>
+              {name}
+            </option>
+  ))
+) : (
+  <option value="">No projects available</option>
+)}
           </select>
           <button
             onClick={toggleModal}
