@@ -63,7 +63,6 @@ export default function CreateIssue({ toggleModal, projectId }) {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent the default form submission behavior
     handleData(); // Call handleData when form is submitted
   };
 
