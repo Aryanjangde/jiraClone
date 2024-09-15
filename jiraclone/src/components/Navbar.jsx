@@ -6,6 +6,8 @@ import CreateIssue from "./CreateIssue";
 
 import SearchBar from "./SearchBar";
 
+console.log(process.env.NEXT_PUBLIC_BASE_URL, "dsfdsfsdf")
+
 const SidebarNavbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [projectId, setProjectId] = useState(1)
