@@ -28,13 +28,13 @@ export default function CreateIssue({ toggleModal, projectId}) {
     const resJson = await res.json()
     return resJson
   } 
-  handleData()
-  .then((res) => {
-    console.log(res, "res")
-    if(res.status === '201'){
-      toggleModal()
-  }
-})
+  // handleData()
+//   .then((res) => {
+//     console.log(res, "res")
+//     if(res.status === '201'){
+//       toggleModal()
+//   }
+// })
 console.log(projectId)
   const handleAddAssignee = () => {
     const assigneeId = parseInt(newAssignee, 10);

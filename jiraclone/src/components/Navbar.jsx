@@ -10,7 +10,7 @@ const SidebarNavbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [projectId, setProjectId] = useState(1)
   const [projectOption, setProjectOption] = useState([]);
-  console.log(process.env.BASE_URL)
+  console.log(process.env.NEXT_PUBLIC_BASE_URL)
   useEffect(() => {
     const getProjects = async () => {
       try {
