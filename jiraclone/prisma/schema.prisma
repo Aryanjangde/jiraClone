@@ -1,55 +1,74 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://admin:aryankarthik123@database-1.c90g6wsuov99.ap-south-1.rds.amazonaws.com:3333/database-1"
+  url      = env("DATABASE_URL")
 }
 
+model User {
+  id       Int       @id @default(autoincrement())
+  email    String    @unique
+  name     String
+  role     Role      @default(DEVELOPER)
+  projects Project[]
+  tasks    Task[]    @relation("TaskAssignees")  // Updated for many-to-many relation
+}
+
+model Project {
+  id        Int    @id @default(autoincrement())
+  name      String
+  managerId Int
+  manager   User   @relation(fields: [managerId], references: [id])
+  tasks     Task[]
+
+  @@index([managerId], map: "Project_managerId_fkey")
+}
+
+model Task {
+  id          Int         @id @default(autoincrement())
+  title       String
+  description String?
+  projectId   Int
+  userId      Int
+  status      TaskStatus  @default(TODO)
+  taskType    TaskType    @default(FEATURE)        // Added Task Type
+  priority    Priority    @default(MEDIUM)         // Added Priority
+  createdAt   DateTime    @default(now())          // Added Created At timestamp
+  project     Project     @relation(fields: [projectId], references: [id])
+
+  // Many-to-many relation for multiple assignees
+  assignees   User[]      @relation("TaskAssignees")
+
+  @@index([projectId], map: "Task_projectId_fkey")
+}
+
+// Enum for Task Type
+enum TaskType {
+  TASK
+  BUG
+  ISSUE
+  FEATURE
+}
+
+// Enum for Priority
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+// Enum for Role
 enum Role {
   MANAGER
   DEVELOPER
 }
 
-model User {
-  id        Int      @id @default(autoincrement()) // Primary key
-  email     String   @unique                      // Unique email for each user
-  name      String                               // Name of the user
-  role      Role     @default(DEVELOPER)          // Role: either MANAGER or DEVELOPER
-  projects  Project[]                             // One-to-many relation with projects (Manager only)
-  tasks     Task[]                                // One-to-many relation with tasks (Developer)
-}
-
-model Project {
-  id        Int      @id @default(autoincrement()) // Primary key
-  name      String                               // Name of the project
-  manager   User     @relation(fields: [managerId], references: [id]) // Manager of the project
-  managerId Int                                  // Foreign key to User (Manager)
-  tasks     Task[]                               // One-to-many relation with tasks in the project
-}
-
-model Task {
-  id         Int       @id @default(autoincrement()) // Primary key
-  title      String                                 // Title of the task
-  description String?                               // Optional description of the task
-  project    Project   @relation(fields: [projectId], references: [id]) // Task belongs to a project
-  projectId  Int                                     // Foreign key to the project
-  assignedTo User      @relation(fields: [userId], references: [id])   // Task is assigned to a developer
-  userId     Int                                     // Foreign key to User (Developer)
-  status     TaskStatus @default(TODO)             // Task status: TODO, IN_PROGRESS, DONE
-}
-
+// Enum for Task Status
 enum TaskStatus {
   TODO
   IN_PROGRESS
   DONE
 }
-
-

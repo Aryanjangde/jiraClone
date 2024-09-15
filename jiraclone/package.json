@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed":"ts-node --transpile-only prisma/seed.ts"
-    
+    "seed": "ts-node --transpile-only prisma/seed.ts"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.8.2",
@@ -29,11 +28,10 @@
     "ts-node": "^10.9.2"
   },
   "devDependencies": {
+    "@types/babel__core": "^7.20.5",
     "@types/node": "^20.16.5",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.9",
     "postcss": "^8",
     "prisma": "^5.19.1",
     "tailwindcss": "^3.4.1",

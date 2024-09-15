@@ -1,6 +1,6 @@
 "use client";
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import CreateIssue from "./CreateIssue";
 
@@ -8,9 +8,24 @@ import SearchBar from "./SearchBar";
 
 const SidebarNavbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [projectId, setProjectId] = useState(1)
+  const [projectOption, setProjectOption] = useState([]);
+  console.log(process.env.NEXT_PUBLIC_BASE_URL)
+  useEffect(() => {
+    const getProjects = async () => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/projects`);
+        const json = await res.json();
+        setProjectOption(json.data);
+      } catch (err) {
+        console.error('Error fetching projects:', err);
+      }
+    };
 
-  const [projectOption, setProjectOption] = useState(["jira-development"]);
+    getProjects()
+  }, []); // Empty dependency array means this effect runs once when the component mounts
 
+  
   const toggleModal = () => setIsModalOpen(!isModalOpen);
 
   return (
@@ -23,12 +38,21 @@ const SidebarNavbar = () => {
           
 
           {/* Project Selector */}
-          <select className="bg-white text-blue-700 py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
-            {projectOption.map((item, index) => (
-              <option key={index} value={item}>
-                {item}
-              </option>
-            ))}
+          <select className="bg-white text-blue-700 py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+          onChange={(e)=>{
+            setProjectId(Number(e.target.value) + 1)
+          }}
+          
+          >
+          {projectOption && projectOption.length > 0 ? (
+            projectOption.map((name, index) => (
+            <option key = {index} value = {index} >
+              {name}
+            </option>
+  ))
+) : (
+  <option value="">Loading...</option>
+)}
           </select>
           <button
             onClick={toggleModal}
@@ -57,7 +81,7 @@ const SidebarNavbar = () => {
       </nav>
 
       {/* Modal */}
-      {isModalOpen && <CreateIssue toggleModal={toggleModal} />}
+      {isModalOpen && <CreateIssue toggleModal={toggleModal} projectId = {projectId} />}
     </div>
   );
 };
