@@ -14,7 +14,7 @@ const SidebarNavbar = () => {
   useEffect(() => {
     const getProjects = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/projects`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/projects`);
         const json = await res.json();
         setProjectOption(json.data);
       } catch (err) {

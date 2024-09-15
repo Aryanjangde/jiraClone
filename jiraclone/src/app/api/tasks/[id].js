@@ -1,35 +1,36 @@
-import prisma from '../../../../lib/prisma'
-export default async function handler(req, res) {
-    const { id } = req.query
-  
-    if (req.method === 'GET') {
-      try {
-        const task = await prisma.task.findUnique({
-          where: { id },
-          include: { project: true, assignee: true },
-        })
-        if (task) {
-          res.status(200).json(task)
-        } else {
-          res.status(404).json({ error: 'Task not found' })
-        }
-      } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch task' })
-      }
-    } else if (req.method === 'PUT') {
-      try {
-        const { title, description, status, assigneeId } = req.body
-        const updatedTask = await prisma.task.update({
-          where: { id },
-          data: { title, description, status, assigneeId },
-        })
-        res.status(200).json(updatedTask)
-      } catch (error) {
-        res.status(400).json({ error: 'Failed to update task' })
-      }
+import prisma from '../../../../lib/prisma';
+import { NextResponse } from 'next/server';
+
+export async function GET(request, { params }) {
+  const { id } = params;
+
+  try {
+    const task = await prisma.task.findUnique({
+      where: { id },
+      include: { project: true, assignee: true },
+    });
+
+    if (task) {
+      return NextResponse.json(task);
     } else {
-      res.setHeader('Allow', ['GET', 'PUT'])
-      res.status(405).end(`Method ${req.method} Not Allowed`)
+      return NextResponse.json({ error: 'Task not found' }, { status: 404 });
     }
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to fetch task' }, { status: 500 });
   }
-  
+}
+
+export async function PUT(request, { params }) {
+  const { id } = params;
+  const { title, description, status, assigneeId } = await request.json();
+
+  try {
+    const updatedTask = await prisma.task.update({
+      where: { id },
+      data: { title, description, status, assigneeId },
+    });
+    return NextResponse.json(updatedTask);
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to update task' }, { status: 400 });
+  }
+}
