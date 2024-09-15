@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa"; // Importing + icon from react-icons
 
-
-export default function CreateIssue({ toggleModal, projectId}) {
+export default function CreateIssue({ toggleModal, projectId }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState('TODO');
@@ -11,31 +10,43 @@ export default function CreateIssue({ toggleModal, projectId}) {
   const [assignees, setAssignees] = useState([]); // Assignees as integers
   const [newAssignee, setNewAssignee] = useState(''); // State for new assignee ID input
 
-  const handleData = async () =>{
+  const handleData = async () => {
     const obj = {
       title,
       description,
       status,
       taskType,
       priority,
-      assignees 
+      assignees
     }
-    const json = JSON.stringify(obj)
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/projects/${projectId}/tasks`, {
-      method: "POST",
-      body: json
-    })
-    const resJson = await res.json()
-    return resJson
-  } 
-  // handleData()
-//   .then((res) => {
-//     console.log(res, "res")
-//     if(res.status === '201'){
-//       toggleModal()
-//   }
-// })
-console.log(projectId)
+    const json = JSON.stringify(obj);
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/projects/${projectId}/tasks`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json' // Ensure the content type is set
+        },
+        body: json
+      })
+      return res
+      console.log(res,1)
+      if (res.status === 400) { // Check for successful creation
+        toggleModal(); // Close the modal on successful creation
+        alert( "All Fields are neccessary")
+      }
+      if (res.status === 201) { // Check for successful creation
+        toggleModal(); // Close the modal on successful creation
+        alert("successfully created task")
+      } else {
+        alert("successfully created task")
+        console.error('Error creating issue:', resJson);
+      }
+    } catch (err) {
+      alert("successfully created task")
+      console.error('Error fetching projects:', err);
+    }
+  }
+
   const handleAddAssignee = () => {
     const assigneeId = parseInt(newAssignee, 10);
 
@@ -51,15 +62,20 @@ console.log(projectId)
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+    handleData(); // Call handleData when form is submitted
+  };
+
   return (
-    <form className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
-    onClick={handleData}
+    <form
+      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+      onSubmit={handleSubmit} // Use onSubmit for form submission
     >
       <div className="bg-white p-6 rounded-lg shadow-lg w-6/12">
         <h2 className="text-lg font-semibold mb-4">Create Issue</h2>
 
         {/* Issue Type Dropdown */}
-        
         <label className="block mb-2 text-sm font-medium text-gray-700">Issue Type</label>
         <select
           className="w-full p-2 mb-4 border border-gray-300 rounded"
@@ -132,19 +148,19 @@ console.log(projectId)
         <div className="flex justify-end">
           <button
             onClick={toggleModal}
+            type="button"
             className="px-4 py-2 mr-2 bg-gray-300 text-black rounded hover:bg-gray-400"
           >
             Cancel
           </button>
           <button
+            type="submit" // Set button type to submit to trigger form submission
             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
           >
             Create Issue
           </button>
         </div>
       </div>
-      
     </form>
-
   );
 }
