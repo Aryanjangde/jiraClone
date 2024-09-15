@@ -10,11 +10,11 @@ const SidebarNavbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [projectId, setProjectId] = useState(1)
   const [projectOption, setProjectOption] = useState([]);
-  
+  console.log(process.env.BASE_URL)
   useEffect(() => {
     const getProjects = async () => {
       try {
-        const res = await fetch(`${process.env.BASE_URL}api/projects`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/projects`);
         const json = await res.json();
         setProjectOption(json.data);
       } catch (err) {
