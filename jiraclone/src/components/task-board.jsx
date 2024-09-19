@@ -1,7 +1,5 @@
 // import React from 'react'
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import SearchBar from "./SearchBar"
-
 const TaskCard = ({ task }) => (
   <div className="bg-white p-4 rounded-lg shadow-md mb-4 border border-blue-100">
     <h3 className="font-semibold text-lg mb-2 text-blue-800">{task.name}</h3>
