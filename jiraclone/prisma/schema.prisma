@@ -31,7 +31,6 @@ model Task {
   title       String
   description String?
   projectId   Int
-  userId      Int
   status      TaskStatus  @default(TODO)
   taskType    TaskType    @default(FEATURE)        // Added Task Type
   priority    Priority    @default(MEDIUM)         // Added Priority

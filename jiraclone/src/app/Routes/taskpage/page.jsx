@@ -1,4 +1,3 @@
-// pages/task.tsx (or wherever you want to place it)
 "use client"
 import { useState, useEffect } from 'react'
 import { User, Calendar, Folder, CheckSquare, MessageSquare } from 'lucide-react'
