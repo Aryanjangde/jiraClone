@@ -1,36 +1,22 @@
+// src/app/api/tasks/[status]/route.js
 import prisma from '../../../../lib/prisma';
 import { NextResponse } from 'next/server';
 
 export async function GET(request, { params }) {
-  const { id } = params;
+  const { status } = params;
 
   try {
-    const task = await prisma.task.findUnique({
-      where: { id },
+    const tasks = await prisma.task.findMany({
+      where: { status },
+      orderBy: [
+        { priority: 'asc' },
+        { title: 'asc' },
+        { createdAt: 'asc' },
+      ],
       include: { project: true, assignee: true },
     });
-
-    if (task) {
-      return NextResponse.json(task);
-    } else {
-      return NextResponse.json({ error: 'Task not found' }, { status: 404 });
-    }
+    return NextResponse.json(tasks);
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch task' }, { status: 500 });
-  }
-}
-
-export async function PUT(request, { params }) {
-  const { id } = params;
-  const { title, description, status, assigneeId } = await request.json();
-
-  try {
-    const updatedTask = await prisma.task.update({
-      where: { id },
-      data: { title, description, status, assigneeId },
-    });
-    return NextResponse.json(updatedTask);
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to update task' }, { status: 400 });
+    return NextResponse.json({ error: 'Failed to fetch tasks' }, { status: 500 });
   }
 }

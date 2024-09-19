@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa"; // Importing + icon from react-icons
 
-
-export default function CreateIssue({ toggleModal, projectId}) {
+export default function CreateIssue({ toggleModal, projectId }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState('TODO');
@@ -10,32 +9,45 @@ export default function CreateIssue({ toggleModal, projectId}) {
   const [priority, setPriority] = useState('LOW');
   const [assignees, setAssignees] = useState([]); // Assignees as integers
   const [newAssignee, setNewAssignee] = useState(''); // State for new assignee ID input
+  const [loading, setLoading] = useState(false); // Loading state to disable button during request
 
-  const handleData = async () =>{
-    const obj = {
+  // Function to handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true); // Set loading state to true while request is in progress
+
+    const issueData = {
       title,
       description,
       status,
       taskType,
       priority,
-      assignees 
+      assignees,
+    };
+    console.log(issueData)
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/projects/${projectId}/tasks`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(issueData),
+      });
+      console.log(response);
+      if (response.ok) {
+        const resJson = await response.json();
+        console.log("Issue created successfully:", resJson);
+        toggleModal();
+      } else {
+        console.error("Error creating issue:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Request failed:", error);
+    } finally {
+      setLoading(false);
     }
-    const json = JSON.stringify(obj)
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/projects/${projectId}/tasks`, {
-      method: "POST",
-      body: json
-    })
-    const resJson = await res.json()
-    return resJson
-  } 
-  // handleData()
-//   .then((res) => {
-//     console.log(res, "res")
-//     if(res.status === '201'){
-//       toggleModal()
-//   }
-// })
-console.log(projectId)
+  };
+
   const handleAddAssignee = () => {
     const assigneeId = parseInt(newAssignee, 10);
 
@@ -52,14 +64,14 @@ console.log(projectId)
   };
 
   return (
-    <form className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
-    onClick={handleData}
+    <form
+      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+      onSubmit={handleSubmit} // Form submission handler
     >
       <div className="bg-white p-6 rounded-lg shadow-lg w-6/12">
         <h2 className="text-lg font-semibold mb-4">Create Issue</h2>
 
         {/* Issue Type Dropdown */}
-        
         <label className="block mb-2 text-sm font-medium text-gray-700">Issue Type</label>
         <select
           className="w-full p-2 mb-4 border border-gray-300 rounded"
@@ -80,6 +92,7 @@ console.log(projectId)
           placeholder="Enter a title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          required
         />
 
         {/* Description */}
@@ -89,10 +102,11 @@ console.log(projectId)
           placeholder="Enter a description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          required
         ></textarea>
 
         {/* Assignees */}
-        <label className="block mb-2 text-sm font-medium text-gray-700">Add Assignee Id's</label>
+        <label className="block mb-2 text-sm font-medium text-gray-700">Add Assignee IDs</label>
         <div className="flex items-center space-x-2 mb-4">
           <select multiple className="w-full p-2 border border-gray-300 rounded">
             {assignees.map((assigneeId) => (
@@ -102,7 +116,7 @@ console.log(projectId)
           <input
             type="number"
             className="p-2 border border-gray-300 rounded"
-            placeholder="Enter new Assignee Id"
+            placeholder="Enter new Assignee ID"
             value={newAssignee}
             onChange={(e) => setNewAssignee(e.target.value)}
           />
@@ -131,20 +145,21 @@ console.log(projectId)
         {/* Actions */}
         <div className="flex justify-end">
           <button
+            type="button"
             onClick={toggleModal}
             className="px-4 py-2 mr-2 bg-gray-300 text-black rounded hover:bg-gray-400"
           >
             Cancel
           </button>
           <button
+            type="submit"
             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            disabled={loading}
           >
-            Create Issue
+            {loading ? 'Creating...' : 'Create Issue'}
           </button>
         </div>
       </div>
-      
     </form>
-
   );
 }
