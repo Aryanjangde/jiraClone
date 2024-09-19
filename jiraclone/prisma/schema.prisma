@@ -36,7 +36,7 @@ model Task {
   priority    Priority    @default(MEDIUM)         // Added Priority
   createdAt   DateTime    @default(now())          // Added Created At timestamp
   project     Project     @relation(fields: [projectId], references: [id])
-
+  deadline    DateTime
   // Many-to-many relation for multiple assignees
   assignees   User[]      @relation("TaskAssignees")
 
