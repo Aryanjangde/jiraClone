@@ -6,11 +6,12 @@ import CreateIssue from "./CreateIssue";
 
 import SearchBar from "./SearchBar";
 
+console.log(process.env.NEXT_PUBLIC_BASE_URL, "dsfdsfsdf")
+
 const SidebarNavbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [projectId, setProjectId] = useState(1)
   const [projectOption, setProjectOption] = useState([]);
-  console.log(process.env.NEXT_PUBLIC_BASE_URL)
   useEffect(() => {
     const getProjects = async () => {
       try {
@@ -21,7 +22,6 @@ const SidebarNavbar = () => {
         console.error('Error fetching projects:', err);
       }
     };
-
     getProjects()
   }, []); // Empty dependency array means this effect runs once when the component mounts
 
@@ -64,9 +64,7 @@ const SidebarNavbar = () => {
             </div>
           </button>
         </div>
-        <div>
-            <SearchBar/>
-        </div>
+
 
         {/* Right side: Profile and Create Issue Button */}
         <div className="flex items-center gap-4">

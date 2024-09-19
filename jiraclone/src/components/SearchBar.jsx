@@ -11,18 +11,20 @@ export default function SearchBar() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-screen max-w-md">
-      <div className="relative">
+    <form onSubmit={handleSubmit} className="w-full">
+      <div className="relative flex justify-between w-full ">
+        <div className='flex justify-center w-full'>
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search..."
-          className="w-full  px-4 py-2 text-gray-700 bg-white border border-blue-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+          className="w-full  px-4 py-2 ml-4 text-gray-700  bg-white border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
         />
+
         <button
           type="submit"
-          className="absolute right-0 top-0 mt-2 mr-2"
+          className="relative right-10"
         >
           <svg
             className="w-6 h-6 text-blue-500 hover:text-blue-600"
@@ -39,7 +41,10 @@ export default function SearchBar() {
             />
           </svg>
         </button>
-      </div>
+        </div>
+
+        </div>
+
     </form>
   )
 }

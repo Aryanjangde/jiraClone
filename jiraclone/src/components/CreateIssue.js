@@ -9,43 +9,46 @@ export default function CreateIssue({ toggleModal, projectId }) {
   const [priority, setPriority] = useState('LOW');
   const [assignees, setAssignees] = useState([]); // Assignees as integers
   const [newAssignee, setNewAssignee] = useState(''); // State for new assignee ID input
+  const [loading, setLoading] = useState(false); // Loading state to disable button during request
 
-  const handleData = async () => {
-    const obj = {
+
+
+  // Function to handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true); // Set loading state to true while request is in progress
+
+    const issueData = {
       title,
       description,
       status,
       taskType,
       priority,
-      assignees
-    }
-    const json = JSON.stringify(obj);
+      assignees,
+    };
+    console.log(issueData)
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/projects/${projectId}/tasks`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/projects/${projectId}/tasks`, {
         method: "POST",
         headers: {
-          'Content-Type': 'application/json' // Ensure the content type is set
+          "Content-Type": "application/json",
         },
-        body: json
-      })
-      return res
-      console.log(res,1)
-      if (res.status === 400) { // Check for successful creation
-        toggleModal(); // Close the modal on successful creation
-        alert( "All Fields are neccessary")
-      }
-      if (res.status === 201) { // Check for successful creation
-        toggleModal(); // Close the modal on successful creation
-        alert("successfully created task")
+        body: JSON.stringify(issueData),
+      });
+      console.log(response);
+      if (response.ok) {
+        const resJson = await response.json();
+        console.log("Issue created successfully:", resJson);
+        toggleModal();
       } else {
-        alert("successfully created task")
-        console.error('Error creating issue:', resJson);
+        console.error("Error creating issue:", response.statusText);
       }
-    } catch (err) {
-      alert("successfully created task")
-      console.error('Error fetching projects:', err);
+    } catch (error) {
+      console.error("Request failed:", error);
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
   const handleAddAssignee = () => {
     const assigneeId = parseInt(newAssignee, 10);
@@ -62,14 +65,11 @@ export default function CreateIssue({ toggleModal, projectId }) {
     }
   };
 
-  const handleSubmit = (e) => {
-    handleData(); // Call handleData when form is submitted
-  };
 
   return (
     <form
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
-      onSubmit={handleSubmit} // Use onSubmit for form submission
+      onSubmit={handleSubmit} // Form submission handler
     >
       <div className="bg-white p-6 rounded-lg shadow-lg w-6/12">
         <h2 className="text-lg font-semibold mb-4">Create Issue</h2>
@@ -95,6 +95,7 @@ export default function CreateIssue({ toggleModal, projectId }) {
           placeholder="Enter a title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          required
         />
 
         {/* Description */}
@@ -104,10 +105,11 @@ export default function CreateIssue({ toggleModal, projectId }) {
           placeholder="Enter a description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          required
         ></textarea>
 
         {/* Assignees */}
-        <label className="block mb-2 text-sm font-medium text-gray-700">Add Assignee Id's</label>
+        <label className="block mb-2 text-sm font-medium text-gray-700">Add Assignee IDs</label>
         <div className="flex items-center space-x-2 mb-4">
           <select multiple className="w-full p-2 border border-gray-300 rounded">
             {assignees.map((assigneeId) => (
@@ -117,7 +119,7 @@ export default function CreateIssue({ toggleModal, projectId }) {
           <input
             type="number"
             className="p-2 border border-gray-300 rounded"
-            placeholder="Enter new Assignee Id"
+            placeholder="Enter new Assignee ID"
             value={newAssignee}
             onChange={(e) => setNewAssignee(e.target.value)}
           />
@@ -143,20 +145,20 @@ export default function CreateIssue({ toggleModal, projectId }) {
           <option value="CRITICAL">Critical</option>
         </select>
 
-        {/* Actions */}
         <div className="flex justify-end">
           <button
-            onClick={toggleModal}
             type="button"
+            onClick={toggleModal}
             className="px-4 py-2 mr-2 bg-gray-300 text-black rounded hover:bg-gray-400"
           >
             Cancel
           </button>
           <button
-            type="submit" // Set button type to submit to trigger form submission
+            type="submit"
             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            disabled={loading}
           >
-            Create Issue
+            {loading ? 'Creating...' : 'Create Issue'}
           </button>
         </div>
       </div>

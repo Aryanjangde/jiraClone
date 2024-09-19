@@ -1,5 +1,9 @@
 // import React from 'react'
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { useEffect } from "react"
+import SearchBar from "./SearchBar"
+
+
 const TaskCard = ({ task }) => (
   <div className="bg-white p-4 rounded-lg shadow-md mb-4 border border-blue-100">
     <h3 className="font-semibold text-lg mb-2 text-blue-800">{task.name}</h3>
@@ -16,7 +20,9 @@ const TaskCard = ({ task }) => (
   </div>
 )
 
+
 const mockTasks = [
+
   { id: 1, name: "Design new logo", priority: "High", deadline: "2023-06-30" },
   { id: 2, name: "Update user dashboard", priority: "Medium", deadline: "2023-07-15" },
   { id: 3, name: "Fix login bug", priority: "High", deadline: "2023-06-25" },
@@ -32,12 +38,16 @@ const mockTasks = [
 ]
 
 export default function TaskBoard() {
+  const [tasks, setTasks] = useState([])
+  // useEffect(()=>{
+
+  // })
   const todoTasks = mockTasks.slice(0, 4)
   const inProgressTasks = mockTasks.slice(4, 8)
   const doneTasks = mockTasks.slice(8)
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-blue-50 h-screen">
+    <div className="container mx-auto px-4 py-8 h-screen">
       <div className="flex flex-col md:flex-row gap-6 h-full">
         {[
           { title: "TODO", tasks: todoTasks },
