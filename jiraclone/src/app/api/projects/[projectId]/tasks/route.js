@@ -31,7 +31,6 @@ export async function POST(req, {params}){
           projectId: Number(projectId), // Ensure this is an integer
           status,
           taskType,
-          userId:0,
           priority,
           createdAt: new Date().toISOString(), // Optional, if you want to explicitly set the createdAt timestamp
           assignees: {
