@@ -11,6 +11,7 @@ export async function GET() {
       const projectNames = projects.map(project => project.name);
       return NextResponse.json({data : projectNames}, {status: 200})
     } catch (error) {
+      console.log(error)
       return NextResponse.json({error : 'Failed to fetch projects', error}, {status: 500})
     }
 }
