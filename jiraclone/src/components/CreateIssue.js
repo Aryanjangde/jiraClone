@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa"; // Importing + icon from react-icons
-
+import { useProjectData } from "../context/Context";
 export default function CreateIssue({ toggleModal, projectId }) {
+  const today = new Date()
+  today.setHours(24)
+  const {state, setState} = useProjectData()
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [deadline, setDeadline] = useState()
   const [status, setStatus] = useState('TODO');
   const [taskType, setTaskType] = useState('FEATURE');
   const [priority, setPriority] = useState('LOW');
@@ -21,6 +25,7 @@ export default function CreateIssue({ toggleModal, projectId }) {
     const issueData = {
       title,
       description,
+      deadline: `${deadline}T00:00:00.000Z`,
       status,
       taskType,
       priority,
@@ -38,9 +43,12 @@ export default function CreateIssue({ toggleModal, projectId }) {
       console.log(response);
       if (response.ok) {
         const resJson = await response.json();
+        setState(!state)
         console.log("Issue created successfully:", resJson);
+        alert("Issue created successfully")
         toggleModal();
       } else {
+        alert("Error creating issue")
         console.error("Error creating issue:", response.statusText);
       }
     } catch (error) {
@@ -108,6 +116,18 @@ export default function CreateIssue({ toggleModal, projectId }) {
           required
         ></textarea>
 
+
+        {/* Deadline */}
+        <label className="block mb-2 text-sm font-medium text-gray-700">Deadline</label>
+        <input
+          type="date"
+          className="w-full p-2 mb-4 border border-gray-300 rounded"
+          value={deadline}
+          onChange={(e) => setDeadline(e.target.value)}
+          min = {today.toISOString().split('T')[0]}
+          required
+        />
+
         {/* Assignees */}
         <label className="block mb-2 text-sm font-medium text-gray-700">Add Assignee IDs</label>
         <div className="flex items-center space-x-2 mb-4">
@@ -145,6 +165,7 @@ export default function CreateIssue({ toggleModal, projectId }) {
           <option value="CRITICAL">Critical</option>
         </select>
 
+        {/* Actions */}
         <div className="flex justify-end">
           <button
             type="button"

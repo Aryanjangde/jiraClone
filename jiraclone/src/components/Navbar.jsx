@@ -3,14 +3,13 @@
 import { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import CreateIssue from "./CreateIssue";
-
+import { useProjectData } from "../context/Context"
 import SearchBar from "./SearchBar";
 
-console.log(process.env.NEXT_PUBLIC_BASE_URL, "dsfdsfsdf")
 
 const SidebarNavbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [projectId, setProjectId] = useState(1)
+  const {projectId, setProjectId} = useProjectData()
   const [projectOption, setProjectOption] = useState([]);
   useEffect(() => {
     const getProjects = async () => {

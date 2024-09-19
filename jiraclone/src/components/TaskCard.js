@@ -1,6 +1,7 @@
 const TaskCard = ({ task }) => (
   <div className="bg-white p-4 rounded-lg shadow-md mb-4 border border-blue-100">
     <h3 className="font-semibold text-lg mb-2 text-blue-800">{task.name}</h3>
+    {console.log(task)}
     <p className="text-sm text-gray-600 mb-2">{task.description}</p>
     <div className="flex justify-between text-sm mb-2">
       <span className={`px-2 py-1 rounded ${
