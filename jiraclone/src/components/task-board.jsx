@@ -14,6 +14,7 @@ const TaskCard = ({ task }) => (
     <div className="flex justify-between text-sm">
       {console.log(task)}
       <span className={`px-2 py-1 rounded ${
+        task.priority === 'CRITICAL' ? 'bg-red-600 text-white' :
         task.priority === 'HIGH' ? 'bg-red-200 text-red-800' :
         task.priority === 'MEDIUM' ? 'bg-yellow-200 text-yellow-800' :
         'bg-green-200 text-green-800'
@@ -21,7 +22,7 @@ const TaskCard = ({ task }) => (
         {task.priority[0] + task.priority.slice(1).toLowerCase()}
       </span>
       <span className="text-blue-600">{new Date(task.deadline).toLocaleDateString("en-US")}</span>
-    </div>
+    </div>         
   </div>
 )
 
@@ -61,9 +62,12 @@ export default function TaskBoard() {
           <div key={section.title} className="flex-1 bg-white p-6 rounded-lg shadow-lg border border-blue-200 flex flex-col">
             <h2 className="text-xl font-bold mb-4 text-blue-800 pb-2 border-b border-blue-200">{section.title}</h2>
             <div className="overflow-y-auto flex-grow">
-              {section.tasks.map((task) => (
+              {section.tasks.length > 0  ?
+              section.tasks.map((task) => (
                 <TaskCard key={task.id} task={task} />
-              ))}
+              )) : 
+              <h1>No Tasks Yet</h1>
+              }
             </div>
           </div>
         ))}

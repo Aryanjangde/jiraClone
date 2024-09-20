@@ -6,7 +6,8 @@ const ProjectProvider =  ({children})=>{
     const [state, setState] = useState(false)
 return (
     <ProjectContext.Provider value={{
-        projectId, setProjectId
+        projectId, setProjectId, 
+        state, setState
     }}>
         {children}
     </ProjectContext.Provider>
