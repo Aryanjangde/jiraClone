@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useGoogleLogin } from '@react-oauth/google';
 import { useDataContext } from '@/context/dataContext';
+import { constrainedMemory } from 'process';
 
 export default function Login({ onSignIn }) {
   const {userData, setUserData} = useDataContext();
@@ -16,8 +17,6 @@ export default function Login({ onSignIn }) {
       });
       const data = await response.json();
       setUserData(data);
-      onSignIn(data); // Pass user data to the parent
-      console.log('User Data:', data);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -32,16 +31,14 @@ export default function Login({ onSignIn }) {
   });
 
   const logout = () => {
-    setUserData(null);
     setAccessToken(null);
+    setUserData('')
+    localStorage.removeItem('accessToken');
     console.log('User logged out');
   };
-
   useEffect(() => {
     if (accessToken) {
       localStorage.setItem('accessToken', accessToken);
-    } else {
-      localStorage.removeItem('accessToken');
     }
   }, [accessToken]);
 
@@ -55,7 +52,7 @@ export default function Login({ onSignIn }) {
 
   return (
     <div className='text-white'>
-      {userData ? (
+      {accessToken ? (
         <div>
           <button onClick={logout}>Logout</button>
         </div>
