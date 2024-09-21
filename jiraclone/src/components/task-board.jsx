@@ -12,7 +12,6 @@ const TaskCard = ({ task }) => (
   <div className="bg-white p-4 rounded-lg shadow-md mb-4 border border-blue-100">
     <h3 className="font-semibold text-lg mb-2 text-blue-800">{task.title}</h3>
     <div className="flex justify-between text-sm">
-      {console.log(task)}
       <span className={`px-2 py-1 rounded ${
         task.priority === 'CRITICAL' ? 'bg-red-600 text-white' :
         task.priority === 'HIGH' ? 'bg-red-200 text-red-800' :
