@@ -5,7 +5,7 @@ async function main() {
   // Create Users
   const manager = await prisma.user.create({
     data: {
-      email: 'manager@example.com',
+      email: 'managvverbvvvb@example.com',
       name: 'John Manager',
       role: 'MANAGER',  // Role is MANAGER
     },
@@ -13,7 +13,7 @@ async function main() {
 
   const developer1 = await prisma.user.create({
     data: {
-      email: 'dev1@example.com',
+      email: 'dev1vvvvvff@example.com',
       name: 'Alice Developer',
       role: 'DEVELOPER', // Role is DEVELOPER (default)
     },
@@ -21,7 +21,7 @@ async function main() {
 
   const developer2 = await prisma.user.create({
     data: {
-      email: 'dev2@example.com',
+      email: 'devvvvvvff2@example.com',
       name: 'Bob Developer',
       role: 'DEVELOPER',
     },
@@ -52,44 +52,46 @@ async function main() {
       title: 'Design Database',
       description: 'Design the initial database schema',
       project: {
-        connect: { id: project1.id }, // Connect task to Project Alpha
+        connect: { id: project1.id },
       },
-      assignedTo: {
-        connect: { id: developer1.id }, // Assign task to Alice (developer)
+      assignees: {
+        connect: { id: developer1.id },
       },
       status: 'TODO',
+      deadline: new Date('2024-12-09T00:00:00Z'),
     },
   });
-
+  
   const task2 = await prisma.task.create({
     data: {
       title: 'Build API',
       description: 'Develop REST API for the project',
       project: {
-        connect: { id: project1.id }, // Connect task to Project Alpha
+        connect: { id: project1.id },
       },
-      assignedTo: {
-        connect: { id: developer2.id }, // Assign task to Bob (developer)
+      assignees: {
+        connect: { id: developer2.id },
       },
       status: 'IN_PROGRESS',
+      deadline: new Date('2024-12-09T00:00:00Z'),
     },
   });
-
-  // Create Tasks for Project Beta
+  
   const task3 = await prisma.task.create({
     data: {
       title: 'Frontend Design',
       description: 'Design the frontend of the project',
       project: {
-        connect: { id: project2.id }, // Connect task to Project Beta
+        connect: { id: project2.id },
       },
-      assignedTo: {
-        connect: { id: developer1.id }, // Assign task to Alice (developer)
+      assignees: {
+        connect: { id: developer1.id },
       },
       status: 'DONE',
+      deadline: new Date('2024-12-09T00:00:00Z'),
     },
   });
-
+  
   console.log({ manager, developer1, developer2, project1, project2, task1, task2, task3 });
 }
 
