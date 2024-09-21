@@ -18,9 +18,9 @@ export async function POST(req, {params}){
   const { projectId } = params 
   if(!projectId){ return NextResponse.json({"error" : "projectId Not Given"}, {status: 400})}
   try {
-    const { title, description, status,taskType,priority, assignees } = await req.json()
-    console.log({ title, description, status,taskType,priority, assignees })
-    if(!title || !description || !status || 
+    const { title, description, deadline, status,taskType,priority, assignees } = await req.json()
+    console.log({ title, description, deadline, status,taskType,priority, assignees })
+    if(!title || !description || !status ||  !deadline ||
     !taskType || !priority || !assignees ){
         return NextResponse.json({"error" : "All Fields are neccessary"}, {status: 400})
     }
@@ -28,6 +28,7 @@ export async function POST(req, {params}){
         data: {
           title,
           description,
+          deadline,
           projectId: Number(projectId), // Ensure this is an integer
           status,
           taskType,

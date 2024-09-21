@@ -3,9 +3,6 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import Navbar from "../components/Navbar";
-import DataContextProvider from "../context/dataContext"
-
-
 const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '';
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,7 +28,6 @@ export default function RootLayout({
   return (
 
     <GoogleOAuthProvider clientId={googleClientId}>
-    <DataContextProvider>
     <html lang="en">
       
       <body
@@ -44,7 +40,6 @@ export default function RootLayout({
       </body>
       
     </html>
-    </DataContextProvider>
     </GoogleOAuthProvider>
 
   );
