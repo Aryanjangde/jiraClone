@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import Navbar from "../components/Navbar";
-const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '';
+import ProjectProvider from "@/context/Context";
+import DataContextProvider from "@/context/dataContext";
+
+const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "";
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -26,21 +30,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-
     <GoogleOAuthProvider clientId={googleClientId}>
-    <html lang="en">
-      
-      <body
-
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        
-        <Navbar/>
-        {children}
-      </body>
-      
-    </html>
+      <ProjectProvider>
+        <DataContextProvider>
+          <html lang="en">
+            <body
+              className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+            >
+              <Navbar />
+              {children}
+            </body>
+          </html>
+        </DataContextProvider>
+      </ProjectProvider>
     </GoogleOAuthProvider>
-
   );
 }
