@@ -28,28 +28,9 @@ const TaskCard = ({ task }) => (
 
 
 export default function TaskBoard() {
-  const {projectId, state} = useProjectData()
-
-  const [tasks, setTasks] = useState([])
-  useEffect(()=>{
-    const getAllTasks = async() =>{
-      try{
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/projects/${projectId}/tasks`)
-        const json = await res.json()
-        setTasks(json.data)
-      }
-      catch(err){
-        console.log(err)
-      }
-    }
-
-    getAllTasks()
-  },[projectId, state])
-  const todoTasks = tasks.filter((task) => task.status === "TODO") 
-  const inProgressTasks = tasks.filter((task) => task.status === "IN_PROGRESS")
-  const doneTasks = tasks.filter((task) => task.status === "DONE") 
-
-
+  const todoTasks = mockTasks.slice(0, 4)
+  const inProgressTasks = mockTasks.slice(4, 8)
+  const doneTasks = mockTasks.slice(8)
 
   return (
     <div className="container mx-auto px-4 py-8 h-screen">
@@ -62,12 +43,10 @@ export default function TaskBoard() {
           <div key={index} className="flex-1 bg-white p-6 rounded-lg shadow-lg border border-blue-200 flex flex-col">
             <h2 className="text-xl font-bold mb-4 text-blue-800 pb-2 border-b border-blue-200">{section.title}</h2>
             <div className="overflow-y-auto flex-grow">
-              {section.tasks.length > 0  ?
-              section.tasks.map((task) => (
+
+              {section.tasks.map((task) => (
                 <TaskCard key={task.id} task={task} />
-              )) : 
-              <h1>No Tasks Yet</h1>
-              }
+              ))}
             </div>
           </div>
         ))}

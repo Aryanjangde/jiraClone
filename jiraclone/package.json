@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "node prisma/seed.js"
+    "seed": "ts-node --transpile-only prisma/seed.ts"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.8.2",

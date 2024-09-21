@@ -13,6 +13,8 @@ const SidebarNavbar = () => {
   const {projectId, setProjectId} = useProjectData()
   const [projectOption, setProjectOption] = useState([]);
   const [openProfile, setOpenProfile] = useState(false);
+
+  console.log(process.env.NEXT_PUBLIC_BASE_URL);
   useEffect(() => {
     const getProjects = async () => {
       try {
