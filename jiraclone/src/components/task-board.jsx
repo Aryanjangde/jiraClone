@@ -1,36 +1,49 @@
 // import React from 'react'
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
-import { useEffect, useState } from "react"
-import SearchBar from "./SearchBar"
-import { useProjectData } from "../context/Context"
-
-
-
-
+import {useProjectData} from '../context/Context'
+import {useState, useEffect} from 'react'
 const TaskCard = ({ task }) => (
-  <div className="bg-white p-4 rounded-lg shadow-md mb-4 border border-blue-100" draggable>
-    <h3 className="font-semibold text-lg mb-2 text-blue-800">{task.title}</h3>
-    <div className="flex justify-between text-sm">
-      {console.log(task)}
-      <span className={`px-2 py-1 rounded ${
-        task.priority === 'CRITICAL' ? 'bg-red-600 text-white' :
-        task.priority === 'HIGH' ? 'bg-red-200 text-red-800' :
-        task.priority === 'MEDIUM' ? 'bg-yellow-200 text-yellow-800' :
-        'bg-green-200 text-green-800'
-      }`}>
-        {task.priority[0] + task.priority.slice(1).toLowerCase()}
-      </span>
-      <span className="text-blue-600">{new Date(task.deadline).toLocaleDateString("en-US")}</span>
-    </div>         
-  </div>
+  
+  <div className="bg-white p-4 rounded-lg shadow-md mb-4 border border-blue-100">
+  <h3 className="font-semibold text-lg mb-2 text-blue-800">{task.title}</h3>
+  <div className="flex justify-between text-sm">
+    <span className={`px-2 py-1 rounded ${
+      task.priority === 'CRITICAL' ? 'bg-red-600 text-white' :
+      task.priority === 'HIGH' ? 'bg-red-200 text-red-800' :
+      task.priority === 'MEDIUM' ? 'bg-yellow-200 text-yellow-800' :
+      'bg-green-200 text-green-800'
+    }`}>
+      {task.priority[0] + task.priority.slice(1).toLowerCase()}
+    </span>
+    <span className="text-blue-600">{new Date(task.deadline).toLocaleDateString("en-US")}</span>
+  </div>         
+</div>
 )
 
 
 export default function TaskBoard() {
-  const todoTasks = mockTasks.slice(0, 4)
-  const inProgressTasks = mockTasks.slice(4, 8)
-  const doneTasks = mockTasks.slice(8)
+  const {projectId, state} = useProjectData()
+  const [tasks, setTasks] = useState([])
+  useEffect(()=>{
+    const getAllTasks = async() =>{
+      try{
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/projects/${projectId}/tasks`)
+        const json = await res.json()
+        setTasks(json.data)
+      }
+      catch(err){
+        console.log(err)
+      }
+    }
+
+    getAllTasks()
+  },[projectId, state])
+  const todoTasks = tasks.filter((task) => task.status === "TODO") 
+  const inProgressTasks = tasks.filter((task) => task.status === "IN_PROGRESS")
+  const doneTasks = tasks.filter((task) => task.status === "DONE") 
+
+
 
   return (
     <div className="container mx-auto px-4 py-8 h-screen">

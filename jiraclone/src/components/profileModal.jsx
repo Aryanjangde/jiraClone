@@ -115,7 +115,7 @@ export default function ProfileModal({setOpenProfile}) {
 
         <div className="mt-auto w-full flex justify-between">
           <button
-            onClick={() =>  setOpenProfile(false)}
+            onClick={() => setOpenProfile(false)}
             className="px-6 py-2 rounded-lg border border-white bg-transparent text-white font-semibold"
           >
             Cancel

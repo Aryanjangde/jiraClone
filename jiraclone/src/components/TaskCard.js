@@ -6,7 +6,6 @@ const TaskCard = ({ task, index}) => {
   return(
   <div className="bg-white p-4 rounded-lg shadow-md mb-4 border border-blue-100 " draggable >
     <h3 className="font-semibold text-lg mb-2 text-blue-800">{task.name}</h3>
-    {console.log(task)}
     <p className="text-sm text-gray-600 mb-2">{task.description}</p>
     <div className="flex justify-between text-sm mb-2">
       <span className={`px-2 py-1 rounded ${
@@ -20,7 +19,7 @@ const TaskCard = ({ task, index}) => {
     </div>
     <div className="text-xs text-gray-500 flex justify-between">
       <span>Status: {task.status}</span>
-      <span>Created At: {new Date(task.createdAt).toLocaleDateString()}</span>
+      <span>Created At: {new Date(task.created_at).toLocaleDateString()}</span>
     </div>
     <div className="text-xs text-gray-500 mt-2">
       Type: {task.type}
