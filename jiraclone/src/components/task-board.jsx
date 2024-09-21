@@ -1,25 +1,29 @@
 // import React from 'react'
 /* eslint-disable @typescript-eslint/no-unused-vars */
+"use client"
+import {useProjectData} from '../context/Context'
+import {useState, useEffect} from 'react'
 const TaskCard = ({ task }) => (
+  
   <div className="bg-white p-4 rounded-lg shadow-md mb-4 border border-blue-100">
-    <h3 className="font-semibold text-lg mb-2 text-blue-800">{task.name}</h3>
-    <div className="flex justify-between text-sm">
-      <span className={`px-2 py-1 rounded ${
-        task.priority === 'High' ? 'bg-red-200 text-red-800' :
-        task.priority === 'Medium' ? 'bg-yellow-200 text-yellow-800' :
-        'bg-green-200 text-green-800'
-      }`}>
-        {task.priority}
-      </span>
-      <span className="text-blue-600">{task.deadline}</span>
-    </div>
-  </div>
+  <h3 className="font-semibold text-lg mb-2 text-blue-800">{task.title}</h3>
+  <div className="flex justify-between text-sm">
+    <span className={`px-2 py-1 rounded ${
+      task.priority === 'CRITICAL' ? 'bg-red-600 text-white' :
+      task.priority === 'HIGH' ? 'bg-red-200 text-red-800' :
+      task.priority === 'MEDIUM' ? 'bg-yellow-200 text-yellow-800' :
+      'bg-green-200 text-green-800'
+    }`}>
+      {task.priority[0] + task.priority.slice(1).toLowerCase()}
+    </span>
+    <span className="text-blue-600">{new Date(task.deadline).toLocaleDateString("en-US")}</span>
+  </div>         
+</div>
 )
 
 
 export default function TaskBoard() {
   const {projectId, state} = useProjectData()
-
   const [tasks, setTasks] = useState([])
   useEffect(()=>{
     const getAllTasks = async() =>{

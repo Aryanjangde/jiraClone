@@ -13,5 +13,5 @@ return (
     </ProjectContext.Provider>
 )
 }
-export const useProjectData =() => useContext(ProjectContext);
+export const useProjectData = () => useContext(ProjectContext)
 export default  ProjectProvider
