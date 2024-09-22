@@ -2,7 +2,6 @@ import {useDragContext} from "../context/DragAndDropContext";
 
 const TaskCard = ({ task, index}) => {
   
-
   return(
   <div className="bg-white p-4 rounded-lg shadow-md mb-4 border border-blue-100 " draggable >
     <h3 className="font-semibold text-lg mb-2 text-blue-800">{task.name}</h3>
