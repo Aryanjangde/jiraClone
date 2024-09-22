@@ -2,21 +2,7 @@
 import { useState, useEffect } from 'react'
 import { User, Calendar, Folder, CheckSquare, MessageSquare } from 'lucide-react'
 import Image from 'next/image'
-// import { io } from 'socket.io-client'
-// const socket = io()
-
-const  Priority = 'low' | 'medium' | 'high';
-
-// const Task = {
-//   id: string
-//   title: string
-//   description: string
-//   project: string
-//   assignedTo: string
-//   status: string
-//   priority: Priority
-//   screenshot: string
-// }
+import {FileUpload} from "../../../components/ui/file-upload";
 
 const priorityColors = {
   low: 'border-green-500',
@@ -48,13 +34,14 @@ const TaskDetails = ({ task }) => (
     </div>
     <div className="mt-6">
       <h3 className="text-lg font-semibold mb-2">Screenshot</h3>
-      <Image
+      {/* <Image
         src={task.screenshot}
         alt="Task Screenshot"
         width={600}
         height={400}
         className="w-full h-64 object-cover rounded-lg"
-      />
+      /> */}
+      <FileUpload/>
     </div>
   </div>
 )
