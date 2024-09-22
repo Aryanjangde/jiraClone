@@ -6,13 +6,15 @@ export async function GET(request,{ params }) {
   const { id } = params;
 
   try {
-    const project = await prisma.project.findUnique({
+    console.log(id)
+    const project = await prisma.Project.findUnique({
+      select: {name: true},
       where: { id },
       include: { tasks: true },
     });
 
     if (project) {
-      return NextResponse.json(project);
+      return NextResponse.json({project},{status:200});
     } else {
       return NextResponse.json({ error: 'Project not found' }, { status: 404 });
     }

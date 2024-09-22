@@ -16,7 +16,6 @@ export default function CreateIssue({ toggleModal, projectId }) {
   const [loading, setLoading] = useState(false); // Loading state to disable button during request
 
 
-
   // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
