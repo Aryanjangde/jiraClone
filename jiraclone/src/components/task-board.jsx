@@ -31,11 +31,12 @@ const TaskCard = ({ task }) => {
 };
 
 export default function TaskBoard() {
-  const { projectId, state } = useProjectData();
+  const { projectId, state, setNavbarState } = useProjectData();
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
     const getAllTasks = async () => {
+      setNavbarState(false)
         try {
           const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/projects/${projectId}/tasks`);
           const json = await res.json();

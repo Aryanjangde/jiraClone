@@ -18,6 +18,7 @@ const TaskDetails = ({ task }) => {
   console.log(projectDetails, "projectDetails")
   const projectId = task.projectId
   const projectName = projectDetails[projectId-1].projectName
+
   return (
     <div className={`bg-white rounded-lg shadow-lg p-6 ${priorityColors[task.priority]} border-l-4`}>
       <h2 className="text-2xl font-bold mb-4">{task.title}</h2>
@@ -92,10 +93,12 @@ const TaskPage = () => {
   const searchParams = useSearchParams();
   const taskId = searchParams.get('taskId');
   const [task, setTask] = useState(null); 
+  const { setNavbarState } = useProjectData();
 
   useEffect(() => {
     async function getTaskData() {
       try {
+        setNavbarState(true)
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/tasks/${taskId}`);
         const json = await res.json();
         setTask(json.data); // Directly store the task object

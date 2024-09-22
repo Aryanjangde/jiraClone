@@ -5,12 +5,21 @@ import { FaPlus } from "react-icons/fa";
 import CreateIssue from "./CreateIssue";
 import { useProjectData } from '../context/Context';
 import ProfileModal from "./profileModal";
+import {useRouter} from 'next/navigation'
+
 
 const SidebarNavbar = () => {
+
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { projectDetails, setProjectDetails, projectId, setProjectId } = useProjectData();
+  const { projectDetails, setProjectDetails, projectId, setProjectId, navbarState } = useProjectData();
   const [projectOption, setProjectOption] = useState([]);
   const [openProfile, setOpenProfile] = useState(false);
+
+  const router = useRouter()
+
+  const handleDashBoardClick = () =>{
+    router.push('/')
+  }
 
   useEffect(() => {
     const getProjects = async () => {
@@ -39,7 +48,9 @@ const SidebarNavbar = () => {
   return (
     <div className="w-screen">
       <nav className="w-full h-20 bg-gradient-to-r from-blue-400 bg-cyan-200 text-white flex justify-between items-center px-4 shadow-md">
-        <div className="flex items-center gap-4">
+        {
+          !navbarState ?
+        (<div className="flex items-center gap-4">
           <select
             className="bg-white text-blue-700 py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             onChange={(e)=>{setProjectId(Number(e.target.value)+1)}}
@@ -66,6 +77,12 @@ const SidebarNavbar = () => {
             </div>
           </button>
         </div>
+        ) : 
+        <button 
+        className="flex items-center py-2 px-4 bg-blue-600 rounded-lg hover:bg-blue-700  hover:text- transition-all focus:outline-none"
+        onClick={handleDashBoardClick}
+        >DashBoard</button>
+        }
         <div className="flex items-center gap-4">
           <button
             className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-12 rounded-lg transition-all"
