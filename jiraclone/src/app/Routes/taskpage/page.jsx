@@ -1,22 +1,12 @@
 "use client"
 import { useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation';
 import { User, Calendar, Folder, CheckSquare, MessageSquare } from 'lucide-react'
 import Image from 'next/image'
 // import { io } from 'socket.io-client'
 // const socket = io()
 
 const  Priority = 'low' | 'medium' | 'high';
-
-// const Task = {
-//   id: string
-//   title: string
-//   description: string
-//   project: string
-//   assignedTo: string
-//   status: string
-//   priority: Priority
-//   screenshot: string
-// }
 
 const priorityColors = {
   low: 'border-green-500',
@@ -98,6 +88,20 @@ const ChatBox = () => {
   }
 
 const TaskPage = () => {
+  const searchParams = useSearchParams() 
+  const taskId = searchParams.get('taskId');
+  useEffect(()=>{
+    async function getTaskData() {
+      try{
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/tasks/${taskId}`)
+        // const 
+      }
+      catch(error){
+
+      }
+      
+    }
+  }, [taskId])
   const task = {
     id: '1',
     title: 'Implement New Feature',

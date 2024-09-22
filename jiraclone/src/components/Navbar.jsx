@@ -3,31 +3,37 @@
 import { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import CreateIssue from "./CreateIssue";
-import {useProjectData} from '../context/Context'
-import SearchBar from "./SearchBar";
-import ProfileModal from "./profileModal"
-
+import { useProjectData } from '../context/Context';
+import ProfileModal from "./profileModal";
 
 const SidebarNavbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const {projectId, setProjectId} = useProjectData()
+  const { projectDetails, setProjectDetails, projectId, setProjectId } = useProjectData();
   const [projectOption, setProjectOption] = useState([]);
-  const [openProfile, setOpenProfile] = useState(false)
+  const [openProfile, setOpenProfile] = useState(false);
+
   useEffect(() => {
     const getProjects = async () => {
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}api/projects`
-        );
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/projects`);
         const json = await res.json();
         setProjectOption(json.data);
+
+        // Set all project details after fetching the options
+        if (json.data.length > 0) {
+          const details = json.data.map((name, index) => ({
+            projectId: index + 1, // Assuming ID starts from 1
+            projectName: name,
+          }));
+          setProjectDetails(details); // Set all project details at once
+        }
       } catch (err) {
         console.error("Error fetching projects:", err);
       }
     };
+
     getProjects();
-  }, []); // Empty dependency array means this effect runs once when the component mounts
-  console.log(projectId)
+  }, []); // Runs once when the component mounts
   const toggleModal = () => setIsModalOpen(!isModalOpen);
 
   return (
@@ -36,11 +42,9 @@ const SidebarNavbar = () => {
         <div className="flex items-center gap-4">
           <select
             className="bg-white text-blue-700 py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            onChange={(e) => {
-              setProjectId(Number(e.target.value) + 1);
-            }}
+            onChange={(e)=>{setProjectId(Number(e.target.value)+1)}}
           >
-            {projectOption && projectOption.length > 0 ? (
+            {projectOption.length > 0 ? (
               projectOption.map((name, index) => (
                 <option key={index} value={index}>
                   {name}
@@ -64,10 +68,8 @@ const SidebarNavbar = () => {
         </div>
         <div className="flex items-center gap-4">
           <button
-            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-12 rounded-lg transition-all "
-            onClick={() => {
-              setOpenProfile(true);
-            }}
+            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-12 rounded-lg transition-all"
+            onClick={() => setOpenProfile(true)}
           >
             Profile
           </button>
@@ -76,7 +78,7 @@ const SidebarNavbar = () => {
       {isModalOpen && (
         <CreateIssue toggleModal={toggleModal} projectId={projectId} />
       )}
-      {openProfile && (<ProfileModal setOpenProfile={setOpenProfile}/>)}
+      {openProfile && <ProfileModal setOpenProfile={setOpenProfile} />}
     </div>
   );
 };
