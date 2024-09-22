@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect } from 'react'
+import { useState, useEffect, use } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation';
 import { User, Calendar, Folder, CheckSquare, MessageSquare } from 'lucide-react'
 import Image from 'next/image'
@@ -90,34 +90,30 @@ const ChatBox = () => {
 const TaskPage = () => {
   const searchParams = useSearchParams() 
   const taskId = searchParams.get('taskId');
+  const [tasks, setTasks] = useState([])
   useEffect(()=>{
     async function getTaskData() {
       try{
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/tasks/${taskId}`)
-        // const 
+        const json = await res.json()
+        setTasks(json.data)
       }
       catch(error){
-
+        console.log("error fetching taskData : " , error )
       }
-      
     }
+    getTaskData()
   }, [taskId])
-  const task = {
-    id: '1',
-    title: 'Implement New Feature',
-    description: 'Create a new dashboard widget that displays real-time analytics data.',
-    project: 'Analytics Dashboard',
-    assignedTo: 'Jane Doe',
-    status: 'In Progress',
-    priority: 'high',
-    screenshot: '/images/placeholder.svg', // ensure this exists in public/images
-  }
+
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="lg:w-[65%]">
-          <TaskDetails task={task} />
+          {
+            console.log(tasks)
+            // tasks.map((task)=>  <TaskDetails task={task} />)
+          }
         </div>
         <div className="lg:w-[35%]">
           <ChatBox />
