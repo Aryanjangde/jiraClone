@@ -2,6 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import LoginComponent from "../UserLogin"; 
 
 export function LampDemo() {
   return (
@@ -18,6 +19,19 @@ export function LampDemo() {
       >
         Task Manager
       </motion.h1>
+
+      
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{
+          delay: 0.7,
+          duration: 1,
+          ease: "easeInOut",
+        }}
+      >
+        <LoginComponent />
+      </motion.div>
 
       <motion.p
         initial={{ opacity: 0.5, y: 50 }}

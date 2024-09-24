@@ -5,8 +5,10 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import Navbar from "../components/Navbar";
 import ProjectProvider from "@/context/Context";
 import DataContextProvider from "@/context/dataContext";
+// import { useRouter } from 'next/navigation';
 
 const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "";
+
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -25,10 +27,14 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
+  
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  // const router = useRouter();
+  // const showNavbar = router.pathname !== '/Routes/LandingPage';
   return (
     <GoogleOAuthProvider clientId={googleClientId}>
       <ProjectProvider>
