@@ -5,7 +5,7 @@ import { FaPlus } from "react-icons/fa";
 import CreateIssue from "./CreateIssue";
 import { useProjectData } from '../context/Context';
 import ProfileModal from "./profileModal";
-import {useRouter} from 'next/navigation'
+import {usePathname, useRouter} from 'next/navigation'
 
 
 const SidebarNavbar = () => {
@@ -15,7 +15,10 @@ const SidebarNavbar = () => {
   const [projectOption, setProjectOption] = useState([]);
   const [openProfile, setOpenProfile] = useState(false);
 
+  const pathname = usePathname()
+
   const router = useRouter()
+  console.log(pathname)
 
   const handleDashBoardClick = () =>{
     router.push('/')
@@ -26,6 +29,7 @@ const SidebarNavbar = () => {
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/projects`);
         const json = await res.json();
+        console.log(json.data, "cvv")
         setProjectOption(json.data);
 
         // Set all project details after fetching the options
@@ -45,6 +49,9 @@ const SidebarNavbar = () => {
   }, []); // Runs once when the component mounts
   const toggleModal = () => setIsModalOpen(!isModalOpen);
 
+  if(pathname === '/Routes/LandingPage') {
+    return 
+  }
   return (
     <div className="w-screen">
       <nav className="w-full h-20 bg-gradient-to-r from-blue-400 bg-cyan-200 text-white flex justify-between items-center px-4 shadow-md">
@@ -55,7 +62,7 @@ const SidebarNavbar = () => {
             className="bg-white text-blue-700 py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             onChange={(e)=>{setProjectId(Number(e.target.value)+1)}}
           >
-            {projectOption.length > 0 ? (
+            {projectOption?.length > 0 ? (
               projectOption.map((name, index) => (
                 <option key={index} value={index}>
                   {name}
