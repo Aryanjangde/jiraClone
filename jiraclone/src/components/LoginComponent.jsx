@@ -26,9 +26,9 @@ const LoginComponent = () => {
           <button
             type="button"
             className="flex gap-[8px] mb-[24px]"
-            // onClick={() => {} /* Replace with navigation */}
+            // onClick={() => {} isme navigation karna hai
           >
-            <FaArrowLeftLong className="mt-1" />
+            <FaArrowLeftLong className="mt-1"/>
             Back
           </button>
           <h1 className="text-2xl font-bold mb-[24px]">

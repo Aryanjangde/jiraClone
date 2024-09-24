@@ -4,13 +4,14 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
+  url      = "mysql://aryankarthik:icantAnyMore@database-1.c7kueqquawrv.ap-south-1.rds.amazonaws.com:3310/database-1"
 }
 
 model User {
   id       Int       @id @default(autoincrement())
   email    String    @unique
-  name     String
+  name     String     
+  password String
   role     Role      @default(DEVELOPER)
   projects Project[]
   tasks    Task[]    @relation("TaskAssignees")  // Updated for many-to-many relation
