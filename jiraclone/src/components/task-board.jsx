@@ -5,6 +5,7 @@ import { useState, useEffect} from 'react';
 
 const TaskCard = ({ task }) => {
   const router = useRouter();
+  const ending = task.title.length > 35 ? "..." : ''
   const handleClick = () => {
     router.push(`/Routes/taskpage?taskId=${task.id}`);
   };
@@ -14,7 +15,7 @@ const TaskCard = ({ task }) => {
       className="bg-white p-4 rounded-lg shadow-md mb-4 border border-blue-100" 
       onClick={handleClick}
     >
-      <h3 className="font-semibold text-lg mb-2 text-blue-800">{task.title}</h3>
+      <h3 className="font-semibold text-lg mb-2 text-blue-800">{task.title.slice(0, 35)+ending}</h3>
       <div className="flex justify-between text-sm">
         <span className={`px-2 py-1 rounded ${
           task.priority === 'CRITICAL' ? 'bg-red-600 text-white' :
