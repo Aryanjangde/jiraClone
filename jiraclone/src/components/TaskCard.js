@@ -23,6 +23,12 @@ const TaskCard = ({ task, index}) => {
     <div className="text-xs text-gray-500 mt-2">
       Type: {task.type}
     </div>
+    <button
+      // onClick={toggleModal}
+      className=" py-2 px-4 bg-slate-50 rounded-lg hover:bg-sky-600 hover:text-white transition-all focus:outline-none"
+      >
+        update Task
+    </button>
   </div>
   ) 
 }

@@ -1,20 +1,58 @@
-"use client"
-import { useState, useEffect, Suspense } from 'react'
-import { useSearchParams } from 'next/navigation';
-import { User, Calendar, Folder, CheckSquare } from 'lucide-react'
-import Image from 'next/image'
-import { useProjectData } from '@/context/Context';
+"use client";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+import { User, Calendar, Folder, CheckSquare } from "lucide-react";
+import Image from "next/image";
+import UpdateStatus from "../../../components/UpdateStatus";
+import { useProjectData } from "@/context/Context";
 import ChatBox from "../../../components/Chatbox";
 
 const priorityColors = {
-  LOW: 'border-green-500',
-  MEDIUM: 'border-yellow-500',
-  HIGH: 'border-red-500',
-  CRITICAL: 'border-red-600'
-}
+  LOW: "border-green-500",
+  MEDIUM: "border-yellow-500",
+  HIGH: "border-red-500",
+  CRITICAL: "border-red-600",
+};
 
-const TaskDetails = ({ task, projectName }) => {
-  const assignees = task.assignees.map((assignee) => assignee.name).join(', ');
+const TaskDetails = ({ task, projectName, taskId }) => {
+  const assignees = task.assignees.map((assignee) => assignee.name).join(", ");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const toggleModal = () => setIsModalOpen(!isModalOpen);
+  const { projectId, taskState, setTaskState} = useProjectData();
+
+
+  const onClose = async (status) => {
+    if (status === task.status){
+      alert('Change status to update')
+      return 
+    }
+    
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/tasks/${taskId}`, {
+        method: "POST", 
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ newStatus: status }), 
+      });
+      const json = await res.json();
+      if(json.message = "successfully updated status"){
+        alert("Updated successfully");
+        setTaskState(!taskState)
+        setIsModalOpen(false);
+        return 
+      }
+       alert("Try again!!!");
+     
+    } catch (err) {
+      console.log(err);
+    }
+    setIsModalOpen(false);
+  };
+
+  const onCancel = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <div className={`bg-white rounded-lg shadow-lg p-6 ${priorityColors[task.priority]} border-l-4`}>
@@ -40,23 +78,35 @@ const TaskDetails = ({ task, projectName }) => {
       </div>
       <div className="mt-6">
         <h3 className="text-lg font-semibold mb-2">Screenshot</h3>
-        <Image
-          src={task.screenshot || `/placeholder.svg`}
-          alt="Task Screenshot"
-          width={600}
-          height={400}
-          className="w-full h-64 object-cover rounded-lg"
-        />
+        <div className="flex">
+          <Image
+            src={task.screenshot || `/placeholder.svg`}
+            alt="Task Screenshot"
+            width={600}
+            height={400}
+            className="w-128 h-64 object-cover rounded-lg"
+          />
+          <button
+            onClick={toggleModal}
+            className="py-2 px-4 h-12 rounded-lg text-white bg-sky-600 hover:text-white transition-all focus:outline-none"
+          >
+            Update Task
+          </button>
+        </div>
       </div>
+      {isModalOpen && (
+        <UpdateStatus toggleModal={toggleModal} projectId={projectId} onClose={onClose} onCancel={onCancel} />
+      )}
     </div>
   );
-}
+};
 
 const TaskContent = () => {
   const searchParams = useSearchParams();
-  const taskId = searchParams.get('taskId');
+  const taskId = searchParams.get("taskId");
   const [task, setTask] = useState(null);
-  const { projectDetails, setNavbarState } = useProjectData();
+  const { projectDetails, setNavbarState, taskState } = useProjectData();
+
 
   useEffect(() => {
     async function getTaskData() {
@@ -73,23 +123,23 @@ const TaskContent = () => {
     if (taskId) {
       getTaskData();
     }
-  }, [taskId, setNavbarState]);
+  }, [taskId, setNavbarState,taskState]);
 
   if (!task) return <div>Loading...</div>;
 
-  const projectName = projectDetails[task.projectId - 1]?.projectName || 'Unknown Project';
+  const projectName = projectDetails[task.projectId - 1]?.projectName || "Unknown Project";
 
   return (
     <div className="flex flex-col lg:flex-row gap-8">
       <div className="lg:w-[65%]">
-        <TaskDetails task={task} projectName={projectName} />
+        <TaskDetails task={task} projectName={projectName} taskId={taskId} />
       </div>
       <div className="lg:w-[35%]">
         <ChatBox />
       </div>
     </div>
   );
-}
+};
 
 const TaskPage = () => {
   return (
@@ -99,6 +149,6 @@ const TaskPage = () => {
       </Suspense>
     </div>
   );
-}
+};
 
 export default TaskPage;
