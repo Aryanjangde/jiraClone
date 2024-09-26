@@ -2,15 +2,6 @@
 
 import { useProjectData } from '@/context/Context'
 import { useState } from 'react'
-import { useState } from "react";
-import { Button } from "./ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 export default function SearchBar() {
   const {tasks,displayTasks ,setdisplayTasks} = useProjectData()
@@ -28,13 +19,13 @@ export default function SearchBar() {
   if (query === ''){
     setdisplayTasks(tasks)
   }
-    e.preventDefault();
-    console.log("Search query:", query);
+    // e.preventDefault();
+    // console.log("Search query:", query);
 
 
   return (
     <form onSubmit={handleSubmit} className="w-full">
-      <div className="relative flex justify-between w-11/12 ">
+      <div className="relative flex justify-between w-full ">
         <div className="flex justify-center w-full gap-4">
           <input
             type="text"
@@ -60,19 +51,6 @@ export default function SearchBar() {
               />
             </svg>
           </button>
-          <Select>
-            <SelectTrigger className="w-[180px] border-sky-500">
-              <SelectValue placeholder="SORT BY"/>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="NONE">NONE</SelectItem>
-              <SelectItem value="status">STATUS</SelectItem>
-              <SelectItem value="deadline">DEADLINE</SelectItem>
-              <SelectItem value="priority">PRIORITY</SelectItem>
-              <SelectItem value="createdAt">CREATED AT</SelectItem>
-            </SelectContent>
-          </Select>
-          
         </div>
       </div>
     </form>

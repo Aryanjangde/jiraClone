@@ -77,15 +77,15 @@ const TaskDetails = ({ task, projectName, taskId }) => {
         </div>
       </div>
       <div className="mt-6">
-        <h3 className="text-lg font-semibold mb-2">Screenshot</h3>
+        {/* <h3 className="text-lg font-semibold mb-2">Screenshot</h3> */}
         <div className="flex">
-          <Image
+          {/* <Image
             src={task.screenshot || `/placeholder.svg`}
             alt="Task Screenshot"
             width={600}
             height={400}
             className="w-128 h-64 object-cover rounded-lg"
-          />
+          /> */}
           <button
             onClick={toggleModal}
             className="py-2 px-4 h-14 rounded-lg text-white bg-blue-500 hover:text-white transition-all focus:outline-none"
