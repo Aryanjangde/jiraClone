@@ -1,13 +1,23 @@
 'use client'
 
+import { useProjectData } from '@/context/Context'
 import { useState } from 'react'
 
 export default function SearchBar() {
   const [query, setQuery] = useState('')
+  const {tasks,displayTasks ,setdisplayTasks} = useProjectData()
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log('Search query:', query)
+    query && 
+    setdisplayTasks([...displayTasks].filter((task)=>{
+      return task.title.toLowerCase().includes(query.toLowerCase())  || 
+      task.description.toLowerCase().includes(query.toLowerCase())
+    }))
+  }
+
+  if (query === ''){
+    setdisplayTasks(tasks)
   }
 
   return (

@@ -30,7 +30,7 @@ export default function CreateIssue({ toggleModal, projectId }) {
       priority,
       assignees,
     };
-    console.log(issueData)
+    // console.log(issueData)
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/projects/${projectId}/tasks`, {
         method: "POST",
@@ -39,7 +39,7 @@ export default function CreateIssue({ toggleModal, projectId }) {
         },
         body: JSON.stringify(issueData),
       });
-      console.log(response);
+      // console.log(response);
       if (response.ok) {
         const resJson = await response.json();
         setState(!state)

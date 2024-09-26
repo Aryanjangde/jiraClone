@@ -88,7 +88,7 @@ const TaskDetails = ({ task, projectName, taskId }) => {
           />
           <button
             onClick={toggleModal}
-            className="py-2 px-4 h-12 rounded-lg text-white bg-sky-600 hover:text-white transition-all focus:outline-none"
+            className="py-2 px-4 h-14 rounded-lg text-white bg-blue-500 hover:text-white transition-all focus:outline-none"
           >
             Update Task
           </button>
