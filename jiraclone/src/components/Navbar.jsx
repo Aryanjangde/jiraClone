@@ -5,7 +5,7 @@ import { FaPlus } from "react-icons/fa";
 import CreateIssue from "./CreateIssue";
 import { useProjectData } from '../context/Context';
 import ProfileModal from "./profileModal";
-import {usePathname, useRouter} from 'next/navigation'
+import {usePathname, useRouter} from 'next/navigation';
 
 
 const SidebarNavbar = () => {
@@ -15,12 +15,13 @@ const SidebarNavbar = () => {
   const [projectOption, setProjectOption] = useState([]);
   const [openProfile, setOpenProfile] = useState(false);
 
-  const pathname = usePathname()
+  const pathname = usePathname();
 
-  const router = useRouter()
+  const router = useRouter();
+  console.log(pathname);
 
   const handleDashBoardClick = () =>{
-    router.push('/')
+    router.push('/');
   }
 
   useEffect(() => {
@@ -50,6 +51,7 @@ const SidebarNavbar = () => {
   if(pathname === '/'|| pathname ==='/Routes/signup') {
     return 
   }
+
   return (
     <div className="w-screen">
       <nav className="w-full h-20 bg-gradient-to-r from-blue-400 bg-cyan-200 text-white flex justify-between items-center px-4 shadow-md">

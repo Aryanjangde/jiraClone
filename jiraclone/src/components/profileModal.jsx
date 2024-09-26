@@ -1,18 +1,6 @@
-"use client"
-
-import { useState } from "react"
-import Login from "./Login"
 import { useDataContext } from "@/context/dataContext"
-
 export default function ProfileModal({setOpenProfile}) {
-  // const {userData} =useDataContext(); 
-  userData = {
-    name : ".dsamn",
-    email:"dsa",
-    tasksAssigned:9,
-    phote:"./sa"
-  }
-
+  const {userData} =useDataContext(); 
   // const handleSignOut = () => {
   //   // Clear the profile data on sign out
   //   setProfileData({
@@ -104,13 +92,10 @@ export default function ProfileModal({setOpenProfile}) {
             Cancel
           </button>
           <a className="px-6 py-2 rounded-lg bg-red-500 font-semibold">
-          <Login />
+            Logout
           </a>
         </div>
-
         {/* Render the login component and pass handleSignIn as a prop */}
-        <div className="mt-4">
-        </div>
       </div>
     </div>
   )
