@@ -1,5 +1,7 @@
 "use client";
 
+import { useProjectData } from '@/context/Context'
+import { useState } from 'react'
 import { useState } from "react";
 import { Button } from "./ui/button";
 import {
@@ -11,12 +13,24 @@ import {
 } from "@/components/ui/select";
 
 export default function SearchBar() {
-  const [query, setQuery] = useState("");
+  const {tasks,displayTasks ,setdisplayTasks} = useProjectData()
+  const [query, setQuery] = useState('');
 
   const handleSubmit = (e) => {
+    e.preventDefault()
+    query && 
+    setdisplayTasks([...displayTasks].filter((task)=>{
+      return task.title.toLowerCase().includes(query.toLowerCase())  || 
+      task.description.toLowerCase().includes(query.toLowerCase())
+    }))
+  }
+
+  if (query === ''){
+    setdisplayTasks(tasks)
+  }
     e.preventDefault();
     console.log("Search query:", query);
-  };
+
 
   return (
     <form onSubmit={handleSubmit} className="w-full">
@@ -62,5 +76,5 @@ export default function SearchBar() {
         </div>
       </div>
     </form>
-  );
-}
+  )
+  }

@@ -32,8 +32,8 @@ const TaskCard = ({ task }) => {
 };
 
 export default function TaskBoard() {
-  const { projectId, state, setNavbarState } = useProjectData();
-  const [tasks, setTasks] = useState([]);
+  const { projectId, state, setNavbarState, setdisplayTasks, displayTasks, setTasks} = useProjectData();
+
 
   useEffect(() => {
     const getAllTasks = async () => {
@@ -41,19 +41,18 @@ export default function TaskBoard() {
         try {
           const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/projects/${projectId}/tasks?sort=${""}`);
           const json = await res.json();
-          setTasks(json.data || []); 
+          setdisplayTasks(json.data || []); 
+          setTasks(json.data || [])
+          set
         } catch (err) {
           console.log(err);
         }
-      
     };
-
     getAllTasks();
-  }, [projectId, state]); // Dependencies
-
-  const todoTasks = tasks.filter((task) => task.status === "TODO"); 
-  const inProgressTasks = tasks.filter((task) => task.status === "IN_PROGRESS");
-  const doneTasks = tasks.filter((task) => task.status === "DONE"); 
+  }, [projectId, state]);
+  const todoTasks = displayTasks.filter((task) => task.status === "TODO"); 
+  const inProgressTasks = displayTasks.filter((task) => task.status === "IN_PROGRESS");
+  const doneTasks = displayTasks.filter((task) => task.status === "DONE"); 
 
   return (
     <div className="container mx-auto px-4 py-8 h-screen">
@@ -67,8 +66,8 @@ export default function TaskBoard() {
             <h2 className="text-xl font-bold mb-4 text-blue-800 pb-2 border-b border-blue-200">{section.title}</h2>
             <div className="overflow-y-auto flex-grow">
               {section.tasks.length > 0 ? (
-                section.tasks.map((task) => (
-                  <TaskCard key={task.id} task={task} />
+                section.tasks.map((displayTasks) => (
+                  <TaskCard key={displayTasks.id} task={displayTasks} />
                 ))
               ) : (
                 <h1>No Tasks Yet</h1>

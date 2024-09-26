@@ -29,7 +29,6 @@ const SidebarNavbar = () => {
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/projects`);
         const json = await res.json();
-        console.log(json.data, "cvv")
         setProjectOption(json.data);
 
         // Set all project details after fetching the options
