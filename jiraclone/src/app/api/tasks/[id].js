@@ -9,9 +9,13 @@ export async function GET(request, { params }) {
     const tasks = await prisma.task.findMany({
       where: { status },
       orderBy: [
-        { priority: 'asc' },
-        { title: 'asc' },
-        { createdAt: 'asc' },
+        {
+        priority: {
+          sort: ['CRITICAL','HIGH', 'MEDIUM', 'LOW'],
+        }},
+        // { title: 'asc' },
+        // { createdAt: 'desc' },
+        { deadline: 'asc'}
       ],
       include: { project: true, assignee: true },
     });

@@ -1,13 +1,27 @@
 import prisma from '../../../../../../lib/prisma'
 import { NextResponse } from 'next/server'
 
+// const customPriority = {CRITICAL:1, HIGH:2, MEDIUM:3, LOW:4}
+
 export async function GET(req, {params}){
     const { projectId } = params 
     if(!projectId){ return  NextResponse.json({"error" : "projectId Not Given"}, {status: 400})}
     try {
       const tasks = await prisma.Task.findMany({
         where: {projectId: Number(projectId) },
+        orderBy: [
+          { priority: 'asc' }
+        ]
       })
+      
+      const customPriorityOrder = { CRITICAL: 1, HIGH: 2, MEDIUM: 3, LOW: 4 };
+      const customStatusOrder = { TODO: 1, IN_PROGRESS: 2, COMPLETED: 3 };
+      tasks.sort((a, b) => {
+        const priorityComparison = customPriorityOrder[a.priority] - customPriorityOrder[b.priority];
+        if (priorityComparison !== 0) return priorityComparison;
+  
+        return customStatusOrder[a.status] - customStatusOrder[b.status];
+      });
       return  NextResponse.json({data: tasks}, {status: 200})
     } catch (error) {
       return NextResponse.json({error: error}, {status: 500})

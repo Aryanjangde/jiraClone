@@ -8,6 +8,7 @@ import ProfileModal from "./profileModal";
 import {usePathname, useRouter} from 'next/navigation'
 
 
+
 const SidebarNavbar = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
