@@ -63,7 +63,7 @@ const SidebarNavbar = () => {
             className="bg-white text-blue-700 py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             onChange={(e)=>{setProjectId(Number(e.target.value)+1)}}
           >
-            {projectOption?.length > 0 ? (
+            {projectOption && projectOption.length>0  ? (
               projectOption.map((name, index) => (
                 <option key={index} value={index}>
                   {name}
