@@ -118,13 +118,7 @@ export default function LoginComponent() {
       <div className="mt-4 text-center">
         <span className="text-gray-400">Or</span>
       </div>
-      <Button 
-        className="w-full mt-4 bg-gray-700 hover:bg-gray-600 focus:ring-blue-500 text-gray-200"
-        onClick={() => console.log("Sign in with Google")}
-      >
-        Sign in with Google
-      </Button>
-
+      
       <Link href="/Routes/signup" passHref>
         <Button 
           className="w-full mt-4 bg-blue-600 hover:bg-blue-500 text-white" 

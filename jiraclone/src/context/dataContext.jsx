@@ -7,11 +7,11 @@ const useDataContext = () => {return useContext(dataContext)};
 
 const DataContextProvider = ({children})=>{
     const [userData, setUserData] = useState('');
-    useEffect(()=>{
-        async function fetchUserData(){
-            // const response = await 
-        }
-    }, [])
+    // useEffect(()=>{
+    //     async function fetchUserData(){
+    //         // const response = await 
+    //     }
+    // }, [])
     return (
         <dataContext.Provider value={{userData, setUserData}}>
             {children}

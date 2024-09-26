@@ -1,32 +1,40 @@
 import prisma from '../../../../../../lib/prisma'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
 // const customPriority = {CRITICAL:1, HIGH:2, MEDIUM:3, LOW:4}
 
-export async function GET(req, {params}){
-    const { projectId } = params 
-    if(!projectId){ return  NextResponse.json({"error" : "projectId Not Given"}, {status: 400})}
-    try {
-      const tasks = await prisma.Task.findMany({
-        where: {projectId: Number(projectId) },
-        orderBy: [
-          { priority: 'asc' }
-        ]
-      })
-      
-      const customPriorityOrder = { CRITICAL: 1, HIGH: 2, MEDIUM: 3, LOW: 4 };
-      const customStatusOrder = { TODO: 1, IN_PROGRESS: 2, COMPLETED: 3 };
+const customPriorityOrder = { CRITICAL: 1, HIGH: 2, MEDIUM: 3, LOW: 4 };
+
+export async function GET(req, { params }) {
+  const { projectId } = params;
+  const sort = req.nextUrl.searchParams.get('sort');  // Correctly accessing the sort parameter
+
+  console.log(sort, "sorting");
+
+  if (!projectId) {
+    return NextResponse.json({ error: "projectId Not Given" }, { status: 400 });
+  }
+
+  try {
+    // Fetch tasks
+    const tasks = await prisma.Task.findMany({
+      where: { projectId: Number(projectId) },
+      orderBy: sort ? { [sort]: 'asc' } : undefined
+    });
+
+    // Apply custom sorting for priority if no other sorting is requested
+    if (!sort || sort === 'priority') {
       tasks.sort((a, b) => {
-        const priorityComparison = customPriorityOrder[a.priority] - customPriorityOrder[b.priority];
-        if (priorityComparison !== 0) return priorityComparison;
-  
-        return customStatusOrder[a.status] - customStatusOrder[b.status];
+        return customPriorityOrder[a.priority] - customPriorityOrder[b.priority];
       });
-      return  NextResponse.json({data: tasks}, {status: 200})
-    } catch (error) {
-      return NextResponse.json({error: error}, {status: 500})
     }
+
+    return NextResponse.json({ data: tasks }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 }
+
 
 export async function POST(req, {params}){
   const { projectId } = params 
@@ -43,11 +51,11 @@ export async function POST(req, {params}){
           title,
           description,
           deadline,
-          projectId: Number(projectId), // Ensure this is an integer
+          projectId: Number(projectId),
           status,
           taskType,
           priority,
-          createdAt: new Date().toISOString(), // Optional, if you want to explicitly set the createdAt timestamp
+          createdAt: new Date().toISOString(),
           assignees: {
             connect: assignees.map(id => ({ id })) // Convert array of IDs to array of objects with id
           }

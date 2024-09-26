@@ -52,22 +52,13 @@ export default function SearchBar() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="NONE">NONE</SelectItem>
-              <SelectItem value="light">STATUS</SelectItem>
-              <SelectItem value="dark">DEADLINE</SelectItem>
-              <SelectItem value="system">PRIORITY</SelectItem>
+              <SelectItem value="status">STATUS</SelectItem>
+              <SelectItem value="deadline">DEADLINE</SelectItem>
+              <SelectItem value="priority">PRIORITY</SelectItem>
+              <SelectItem value="createdAt">CREATED AT</SelectItem>
             </SelectContent>
           </Select>
-          <Select>
-            <SelectTrigger className="w-[180px] border-sky-500">
-              <SelectValue placeholder="FILTER BY"/>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="NONE">NONE</SelectItem>
-              <SelectItem value="light">STATUS</SelectItem>
-              <SelectItem value="dark">DEADLINE</SelectItem>
-              <SelectItem value="system">PRIORITY</SelectItem>
-            </SelectContent>
-          </Select>
+          
         </div>
       </div>
     </form>
