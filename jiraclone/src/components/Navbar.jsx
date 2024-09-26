@@ -47,7 +47,7 @@ const SidebarNavbar = () => {
   }, []); // Runs once when the component mounts
   const toggleModal = () => setIsModalOpen(!isModalOpen);
 
-  if(pathname === '/Routes/LandingPage') {
+  if(pathname === '/'|| pathname ==='/Routes/signup') {
     return 
   }
   return (

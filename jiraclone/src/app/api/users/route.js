@@ -12,6 +12,7 @@ const createToken = (user) => {
 // Consolidate signup and login under the same POST request
 export async function POST(req) {
   const { action, password, email, role, name } = await req.json(); // Destructure action from the request body
+  console.log(action,email)
   
   if (action === 'signup') {
     // Handle signup
@@ -25,6 +26,7 @@ export async function POST(req) {
       const token = createToken(user);
       return NextResponse.json({ data: { user, token } }, { status: 201 });
     } catch (error) {
+      console.log(error)
       return NextResponse.json({ error: 'Failed to create user' }, { status: 400 });
     }
   } else if (action === 'login') {

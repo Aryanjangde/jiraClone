@@ -52,9 +52,7 @@ export default function SearchBar() {
           </svg>
         </button>
         </div>
-
         </div>
-
     </form>
   )
 }

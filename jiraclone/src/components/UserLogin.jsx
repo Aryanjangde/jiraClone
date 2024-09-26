@@ -1,5 +1,6 @@
 "use client"
 import { useEffect, useState } from 'react'
+
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useRouter } from 'next/navigation'
@@ -11,8 +12,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { useProjectData } from '@/context/Context'
 
 export default function LoginComponent() {
+  const {userData, setUserData} = useProjectData()
   const router = useRouter();
   const [role, setRole] = useState("");
   const [email, setEmail] = useState("");
@@ -41,12 +44,18 @@ export default function LoginComponent() {
           "role":role,
         })
       });
+
   
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem('token', data.token); // Store token
+        // setUserData({
+        //   "email":email,
+        //   "password":password,
+        //   "role":role,
+        // })
         setIsLoggedIn(true);
-        router.push("/"); // Redirect after successful login
+        router.push("/Routes/Dashboard"); 
       } else {
         const errorData = await response.json();
         alert(errorData.error || "Login failed");
@@ -118,12 +127,12 @@ export default function LoginComponent() {
       <div className="mt-4 text-center">
         <span className="text-gray-400">Or</span>
       </div>
-      <Button 
+      {/* <Button 
         className="w-full mt-4 bg-gray-700 hover:bg-gray-600 focus:ring-blue-500 text-gray-200"
         onClick={() => console.log("Sign in with Google")}
       >
         Sign in with Google
-      </Button>
+      </Button> */}
 
       <Link href="/Routes/signup" passHref>
         <Button 

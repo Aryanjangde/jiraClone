@@ -52,10 +52,18 @@ export default function Component() {
           }),
         }
       );
+      
+      console.log({
+        action: "signup",
+        name: name,
+        email: email,
+        password: password,
+        role: role,
+      })
 
       const data = await response.json();
       if (data) {
-        router.push("/Routes/LandingPage");
+        router.push("/");
       }
       if (!response.ok) {
         throw new Error(data.message || "Something went wrong");
@@ -159,14 +167,14 @@ export default function Component() {
       <div className="mt-4 text-center">
         <span className="text-gray-400">Or</span>
       </div>
-      <Button
+      {/* <Button
         className="w-full mt-4 bg-gray-700 hover:bg-gray-600 focus:ring-blue-500 text-gray-200"
         onClick={() => console.log("Sign up with Google")}
       >
         Sign up with Google
-      </Button>
+      </Button> */}
 
-      <Link href="/login" passHref>
+      <Link href="/" passHref>
         <Button className="w-full mt-4 bg-gray-700 hover:bg-gray-600 focus:ring-blue-500 text-gray-200">
           Already have an account? Log In
         </Button>

@@ -5,8 +5,13 @@ import Login from "./Login"
 import { useDataContext } from "@/context/dataContext"
 
 export default function ProfileModal({setOpenProfile}) {
-  const {userData} =useDataContext(); 
-
+  // const {userData} =useDataContext(); 
+  userData = {
+    name : ".dsamn",
+    email:"dsa",
+    tasksAssigned:9,
+    phote:"./sa"
+  }
 
   // const handleSignOut = () => {
   //   // Clear the profile data on sign out
