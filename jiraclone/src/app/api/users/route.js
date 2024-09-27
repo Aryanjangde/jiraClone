@@ -52,12 +52,37 @@ export async function POST(req) {
   }
 }
 
-// GET request to fetch all users
-export async function GET() {
+export async function GET(req) {
+  const { search } = req.query;  // Get the search query from the URL
+  
   try {
-    const users = await prisma.User.findMany();
+    let users;
+    
+    if (search) {
+      // If there's a search query, find users by name or ID
+      users = await prisma.User.findMany({
+        where: {
+          OR: [
+            {
+              id: parseInt(search, 10),
+            },
+            {
+              name: {
+                contains: search, // Search by name containing the string
+                mode: 'insensitive', // Case insensitive search
+              },
+            },
+          ],
+        },
+      });
+    } else {
+      // If no search query, return all users
+      users = await prisma.User.findMany();
+    }
+
     return NextResponse.json({ data: users }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch users' }, { status: 500 });
   }
 }
+

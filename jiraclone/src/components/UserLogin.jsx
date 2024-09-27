@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import {useDataContext} from "../context/dataContext";
 
 export default function LoginComponent() {
   const router = useRouter();
@@ -20,6 +21,7 @@ export default function LoginComponent() {
   const [name, setName] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState(""); // State for error messages
+  const {setUserData} = useDataContext();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -46,7 +48,13 @@ export default function LoginComponent() {
         const data = await response.json();
         localStorage.setItem('token', data.token); // Store token
         setIsLoggedIn(true);
-        router.push("/"); // Redirect after successful login
+        setUserData(
+          {"email":email,
+           "name":name, 
+           "role":role})
+
+        router.push("/");
+         // Redirect after successful login
       } else {
         const errorData = await response.json();
         alert(errorData.error || "Login failed");
