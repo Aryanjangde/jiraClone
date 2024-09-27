@@ -52,24 +52,15 @@ export default function Component() {
           }),
         }
       );
-      
-      console.log({
-        action: "signup",
-        name: name,
-        email: email,
-        password: password,
-        role: role,
-      })
 
       const data = await response.json();
+      if (!response.ok) {
+        console.log(data)
+        throw new Error(data.error || "Something went wrong");
+      }
       if (data) {
         router.push("/");
       }
-      if (!response.ok) {
-        throw new Error(data.message || "Something went wrong");
-      }
-
-      console.log("Signup successful", data);
     } catch (error) {
       setErrorMessage(error.message);
     }

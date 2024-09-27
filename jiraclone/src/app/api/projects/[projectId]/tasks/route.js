@@ -9,7 +9,7 @@ export async function GET(req, { params }) {
   const { projectId } = params;
   const sort = req.nextUrl.searchParams.get('sort');  // Correctly accessing the sort parameter
 
-  console.log(sort, "sorting");
+  // console.log(sort, "sorting");      
 
   if (!projectId) {
     return NextResponse.json({ error: "projectId Not Given" }, { status: 400 });

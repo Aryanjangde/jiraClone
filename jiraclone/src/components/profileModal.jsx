@@ -64,8 +64,7 @@ export default function ProfileModal({setOpenProfile}) {
             <select
               className="w-full h-12 border border-gray-300 p-2 rounded-lg bg-white text-sm font-semibold text-black"
             >
-                <option>DEVELOPER</option>
-                <option>MANAGER</option>
+                <option>{userData.role}</option>
             </select>
 
             </div>

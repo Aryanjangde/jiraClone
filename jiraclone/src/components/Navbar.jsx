@@ -18,10 +18,9 @@ const SidebarNavbar = () => {
   const pathname = usePathname();
 
   const router = useRouter();
-  console.log(pathname);
 
   const handleDashBoardClick = () =>{
-    router.push('/');
+    router.push('/Routes/Dashboard');
   }
 
   useEffect(() => {
