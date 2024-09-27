@@ -2,6 +2,7 @@ import prisma from '../../../../lib/prisma';
 import { NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import { error } from 'console';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
 
@@ -11,10 +12,11 @@ const createToken = (user) => {
 
 // Consolidate signup and login under the same POST request
 export async function POST(req) {
-  const { action, password, email, role, name } = await req.json(); // Destructure action from the request body
+  const { action, password, email,  name,role } = await req.json(); 
+  
+  // console.log(action,email)
   
   if (action === 'signup') {
-    // Handle signup
     const hashedPassword = await bcrypt.hash(password, 10);
     
     try {
@@ -22,27 +24,32 @@ export async function POST(req) {
         data: { password: hashedPassword, email, role, name },
       });
       
-      const token = createToken(user);
-      return NextResponse.json({ data: { user, token } }, { status: 201 });
+      return NextResponse.json({ data: { user } }, { status: 201 });
     } catch (error) {
-      return NextResponse.json({ error: 'Failed to create user' }, { status: 400 });
+      console.log(error)
+      return NextResponse.json({ error: 'user already exists!!!' }, { status: 400 });
     }
   } else if (action === 'login') {
     try {
       const user = await prisma.User.findUnique({ where: { email } });
-      console.log(user, "user")
       if (!user) {
         return NextResponse.json({ error: 'User not found' }, { status: 404 });
       }
-      
       const isPasswordValid = await bcrypt.compare(password, user.password);
       
       if (!isPasswordValid) {
-        return NextResponse.json({ error: 'Invalid password' }, { status: 401 });
+        return NextResponse.json({ error: 'Wrong password!!!' }, { status: 401 });
       }
+      if(email !== user.email){
+        return NextResponse.json({ error: 'email does not match' }, { status: 401 });
+      }
+      if(name !== user.name){
+        return NextResponse.json({error: "name does not match"}, {status: 401})
+      }
+
+
       
       const token = createToken(user);
-      console.log(token, "cc")
       return NextResponse.json({ data: { user, token } }, { status: 200 });
     } catch (error) {
       return NextResponse.json({ error: 'Failed to login' }, { status: 500 });

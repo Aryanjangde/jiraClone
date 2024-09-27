@@ -9,7 +9,6 @@ export default function LandingPage(){
     return (
         <div className="flex w-full h-full">
             <LampDemo1/>
-            
         </div>
     )
 }

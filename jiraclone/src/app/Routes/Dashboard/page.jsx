@@ -1,4 +1,4 @@
-import TaskBoard from "../../../components/task-board"
+import TaskBoard from '../../../components/task-board'
 import SearchBar from "../../../components/SearchBar";
 export default function abc(){
     return (

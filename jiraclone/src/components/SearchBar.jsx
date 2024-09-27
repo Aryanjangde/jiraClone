@@ -1,7 +1,7 @@
 "use client";
 
 import { useProjectData } from '@/context/Context'
-import { useState } from 'react'
+import { useState ,useEffect} from 'react'
 
 export default function SearchBar() {
   const {tasks,displayTasks ,setdisplayTasks} = useProjectData()
@@ -16,9 +16,12 @@ export default function SearchBar() {
     }))
   }
 
-  if (query === ''){
-    setdisplayTasks(tasks)
-  }
+  useEffect(() => {
+    // If query is empty, reset displayTasks to the full task list
+    if (query === '') {
+      setdisplayTasks(tasks);
+    }
+  }, [query, tasks, setdisplayTasks]);
     // e.preventDefault();
     // console.log("Search query:", query);
 

@@ -39,11 +39,10 @@ export default function TaskBoard() {
     const getAllTasks = async () => {
       setNavbarState(false)
         try {
-          const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/projects/${projectId}/tasks?sort=${""}`);
+          const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/projects/${projectId}/tasks`);
           const json = await res.json();
           setdisplayTasks(json.data || []); 
           setTasks(json.data || [])
-          set
         } catch (err) {
           console.log(err);
         }

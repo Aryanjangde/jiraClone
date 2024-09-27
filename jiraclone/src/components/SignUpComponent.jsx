@@ -54,14 +54,13 @@ export default function Component() {
       );
 
       const data = await response.json();
-      if (data) {
-        router.push("/Routes/LandingPage");
-      }
       if (!response.ok) {
-        throw new Error(data.message || "Something went wrong");
+        console.log(data)
+        throw new Error(data.error || "Something went wrong");
       }
-
-      console.log("Signup successful", data);
+      if (data) {
+        router.push("/");
+      }
     } catch (error) {
       setErrorMessage(error.message);
     }
@@ -159,9 +158,14 @@ export default function Component() {
       <div className="mt-4 text-center">
         <span className="text-gray-400">Or</span>
       </div>
-      
+      {/* <Button
+        className="w-full mt-4 bg-gray-700 hover:bg-gray-600 focus:ring-blue-500 text-gray-200"
+        onClick={() => console.log("Sign up with Google")}
+      >
+        Sign up with Google
+      </Button> */}
 
-      <Link href="/Routes/LandingPage" passHref>
+      <Link href="/" passHref>
         <Button className="w-full mt-4 bg-gray-700 hover:bg-gray-600 focus:ring-blue-500 text-gray-200">
           Already have an account? Log In
         </Button>

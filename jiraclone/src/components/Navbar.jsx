@@ -18,10 +18,9 @@ const SidebarNavbar = () => {
   const pathname = usePathname();
 
   const router = useRouter();
-  console.log(pathname);
 
   const handleDashBoardClick = () =>{
-    router.push('/');
+    router.push('/Routes/Dashboard');
   }
 
   useEffect(() => {
@@ -48,7 +47,7 @@ const SidebarNavbar = () => {
   }, []); // Runs once when the component mounts
   const toggleModal = () => setIsModalOpen(!isModalOpen);
 
-  if(pathname === '/Routes/LandingPage' || pathname === "/Routes/signup") {
+  if(pathname === '/'|| pathname ==='/Routes/signup') {
     return 
   }
 
