@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import CreateIssue from "./CreateIssue";
 import { useProjectData } from '../context/Context';
+import { useDataContext } from '@/context/dataContext';
 import ProfileModal from "./profileModal";
 import {usePathname, useRouter} from 'next/navigation';
 
@@ -18,6 +19,7 @@ const SidebarNavbar = () => {
   const pathname = usePathname();
 
   const router = useRouter();
+  const { isLoggedIn } = useDataContext();
 
   const handleDashBoardClick = () =>{
     router.push('/Routes/Dashboard');
@@ -47,7 +49,7 @@ const SidebarNavbar = () => {
   }, []); // Runs once when the component mounts
   const toggleModal = () => setIsModalOpen(!isModalOpen);
 
-  if(pathname === '/'|| pathname ==='/Routes/signup') {
+  if(pathname === '/'|| pathname ==='/Routes/signup' || !isLoggedIn) {
     return 
   }
 
