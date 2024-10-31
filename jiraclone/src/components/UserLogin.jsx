@@ -38,7 +38,7 @@ export default function LoginComponent() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          action:"login",  // Specify the action here
+          action:"login",  
           name,
           "email":email,
           "password":password,
@@ -48,9 +48,8 @@ export default function LoginComponent() {
   
       if (response.ok) {
         const data = await response.json();
-        const {id , name, email , role} = data.data.user
-
-        localStorage.setItem('token', data.token); // Store token
+        const {id , name, email , role} = data.user
+        localStorage.setItem('token', data.token); 
         setUserData({id , name, email , role})
         setIsLoggedIn(true);
         router.push("/Routes/Dashboard"); 

@@ -6,7 +6,6 @@ export async function GET(request,{ params }) {
   const { id } = params;
 
   try {
-    console.log(id)
     const project = await prisma.Project.findUnique({
       select: {name: true},
       where: { id },

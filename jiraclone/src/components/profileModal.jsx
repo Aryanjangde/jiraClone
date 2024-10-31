@@ -13,7 +13,7 @@ export default function ProfileModal({setOpenProfile}) {
     function handleLogout(){
       localStorage.removeItem("token");
       setUserData({})
-      router.push("/Routes/LandingPage");
+      router.push("/");
     }
 
   return (

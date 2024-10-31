@@ -10,17 +10,13 @@ const createToken = (user) => {
   return jwt.sign({ id: user.id, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: '24h' });
 }
 
-// Consolidate signup and login under the same POST request
 export async function POST(req) {
   const { action, password, email,  name,role } = await req.json(); 
-  
-  // console.log(action,email)
-  
   if (action === 'signup') {
     const hashedPassword = await bcrypt.hash(password, 10);
     
     try {
-      const user = await prisma.User.create({
+      const user = await prisma.user.create({
         data: { password: hashedPassword, email, role, name },
       });
       
@@ -45,13 +41,11 @@ export async function POST(req) {
       }
       if(name !== user.name){
         return NextResponse.json({error: "name does not match"}, {status: 401})
-      }
-
-
-      
+      }      
       const token = createToken(user);
-      return NextResponse.json({ data: { user, token } }, { status: 200 });
+      return NextResponse.json({user, token }, { status: 200 });
     } catch (error) {
+      console.log(error)
       return NextResponse.json({ error: 'Failed to login' }, { status: 500 });
     }
   } else {
@@ -89,6 +83,7 @@ export async function GET(req) {
 
     return NextResponse.json({ data: users }, { status: 200 });
   } catch (error) {
+    console.log(error)
     return NextResponse.json({ error: 'Failed to fetch users' }, { status: 500 });
   }
 }

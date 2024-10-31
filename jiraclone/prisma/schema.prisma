@@ -4,47 +4,39 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://aryankarthik:icantAnyMore@database-1.c7kueqquawrv.ap-south-1.rds.amazonaws.com:3310/database-1"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id       Int       @id @default(autoincrement())
-  email    String    @unique
-  name     String     
+  id    Int    @id @default(autoincrement())
+  email String @unique
+  name  String
   password String
-  role     Role      @default(DEVELOPER)
-  projects Project[]
-  tasks    Task[]    @relation("TaskAssignees")  // Updated for many-to-many relation
+  role  Role   @default(DEVELOPER)
 }
 
 model Project {
   id        Int    @id @default(autoincrement())
-  name      String 
+  name      String
   managerId Int
-  manager   User   @relation(fields: [managerId], references: [id])
-  tasks     Task[]
 
   @@index([managerId], map: "Project_managerId_fkey")
 }
 
 model Task {
-  id          Int         @id @default(autoincrement())
+  id          Int           @id @default(autoincrement())
   title       String
   description String?
   projectId   Int
-  status      TaskStatus  @default(TODO)
-  taskType    TaskType    @default(FEATURE)        // Added Task Type
-  priority    Priority    @default(MEDIUM)         // Added Priority
-  createdAt   DateTime    @default(now())          // Added Created At timestamp
-  project     Project     @relation(fields: [projectId], references: [id])
-  deadline    DateTime    @db.Date
-  // Many-to-many relation for multiple assignees
-  assignees   User[]      @relation("TaskAssignees")
+  status      TaskStatus    @default(TODO)
+  taskType    TaskType      @default(FEATURE)
+  priority    Task_priority @default(MEDIUM)
+  createdAt   DateTime      @default(now())
+  deadline    DateTime      @db.Date
 
   @@index([projectId], map: "Task_projectId_fkey")
 }
 
-// Enum for Task Type
 enum TaskType {
   TASK
   BUG
@@ -52,23 +44,20 @@ enum TaskType {
   FEATURE
 }
 
-// Enum for Priority
-enum Priority {
-  CRITICAL
-  HIGH
-  MEDIUM
-  LOW
-}
-
-// Enum for Role
 enum Role {
   MANAGER
   DEVELOPER
 }
 
-// Enum for Task Status
 enum TaskStatus {
   TODO
   IN_PROGRESS
   DONE
+}
+
+enum Task_priority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
 }

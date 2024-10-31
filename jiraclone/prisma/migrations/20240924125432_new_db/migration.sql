@@ -41,8 +41,11 @@ CREATE TABLE `_TaskAssignees` (
     `B` INTEGER NOT NULL,
 
     UNIQUE INDEX `_TaskAssignees_AB_unique`(`A`, `B`),
-    INDEX `_TaskAssignees_B_index`(`B`)
+    INDEX `_TaskAssignees_B_index`(`B`),
+
+    PRIMARY KEY (`A`, `B`)  -- Added composite primary key
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 
 -- AddForeignKey
 ALTER TABLE `Project` ADD CONSTRAINT `Project_managerId_fkey` FOREIGN KEY (`managerId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
