@@ -19,6 +19,7 @@ const TaskDetails = ({ task, projectName, taskId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const toggleModal = () => setIsModalOpen(!isModalOpen);
   const { projectId, taskState, setTaskState} = useProjectData();
+  const router = useRouter();
 
 
   const onClose = async (status) => {
