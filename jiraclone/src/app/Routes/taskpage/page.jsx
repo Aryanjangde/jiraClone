@@ -53,7 +53,25 @@ const TaskDetails = ({ task, projectName, taskId }) => {
   const onCancel = () => {
     setIsModalOpen(false);
   };
-
+  const deleteTask = async () => {
+    const confirmed = window.confirm("Are you sure you want to delete this task?");
+    if (!confirmed) return;
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/tasks/${taskId}`, {
+        method: "DELETE",
+      });
+      const json = await res.json();
+      if (json.message === "Successfully deleted task") {
+        alert("Task deleted successfully");
+        setTaskState(!taskState); // Refresh the task state to remove deleted task from view
+      } else {
+        alert("Failed to delete task");
+      }
+    } catch (err) {
+      console.log("Error deleting task:", err);
+      alert("An error occurred while trying to delete the task.");
+    }
+  };
   return (
     <div className={`bg-white rounded-lg shadow-lg p-6 ${priorityColors[task.priority]} border-l-4`}>
       <h2 className="text-2xl font-bold mb-4">{task.title}</h2>
@@ -91,6 +109,12 @@ const TaskDetails = ({ task, projectName, taskId }) => {
             className="py-2 px-4 h-14 rounded-lg text-white bg-blue-500 hover:text-white transition-all focus:outline-none"
           >
             Update Task
+          </button>
+          <button
+            onClick={deleteTask}
+            className="py-2 px-4 h-14 rounded-lg text-white bg-red-500 hover:bg-red-600 transition-all focus:outline-none ml-4"
+          >
+            Delete Task
           </button>
         </div>
       </div>
