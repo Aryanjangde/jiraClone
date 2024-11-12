@@ -56,3 +56,22 @@ export async function POST(req, { params }) {
         return NextResponse.json({ error: err.message }, { status: 500 }); // Return error message
     }
 }
+export async function DELETE(req, {params}){
+    const {taskId} = params;
+
+    if(!taskId){
+        return NextResponse.json({ error: "task Id not given" }, { status: 400 });
+    }
+    try{
+        const updateStatus = await prisma.Task.delete({
+            where: {
+                id: Number(taskId)
+            }
+        });
+        return NextResponse.json({ message: "successfully deleted status" }, { status: 200 });
+
+    }catch(err){
+        return NextResponse.json({ error: err.message }, { status: 500 });
+    }
+
+}
