@@ -65,18 +65,6 @@ export default function ProfileModal({setOpenProfile}) {
 
             </div>
           </div>
-
-          <div>
-            <label className="block mb-2 text-sm font-semibold text-white">
-              Tasks Assigned
-            </label>
-            <input
-              type="text"
-              className="w-full h-12 border border-gray-300 p-2 rounded-lg bg-white text-sm font-semibold text-black"
-              value={userData.tasksAssigned || ""}
-              readOnly
-            />
-          </div>
         </div>
 
         <div className="mt-auto w-full flex justify-between">
@@ -87,7 +75,7 @@ export default function ProfileModal({setOpenProfile}) {
             Cancel
           </button>
 
-            <button className="px-6 py-2 rounded-lg bg-red-500 font-semibold" onClick={handleLogout}>
+            <button className="px-6 py-2 text-white rounded-lg bg-red-500 font-semibold" onClick={handleLogout}>
             Logout
             </button>
             
