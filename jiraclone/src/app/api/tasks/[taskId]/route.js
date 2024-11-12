@@ -68,7 +68,7 @@ export async function DELETE(req, {params}){
                 id: Number(taskId)
             }
         });
-        return NextResponse.json({ message: "successfully deleted status" }, { status: 200 });
+        return NextResponse.json({ message: "Successfully deleted task" }, { status: 200 });
 
     }catch(err){
         return NextResponse.json({ error: err.message }, { status: 500 });
