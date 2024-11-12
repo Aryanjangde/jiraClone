@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { User, Calendar, Folder, CheckSquare } from "lucide-react";
 import Image from "next/image";
 import UpdateStatus from "../../../components/UpdateStatus";
@@ -63,7 +63,8 @@ const TaskDetails = ({ task, projectName, taskId }) => {
       const json = await res.json();
       if (json.message === "Successfully deleted task") {
         alert("Task deleted successfully");
-        setTaskState(!taskState); // Refresh the task state to remove deleted task from view
+        setTaskState(!taskState);
+        router.push("/Routes/Dashboard"); // Refresh the task state to remove deleted task from view
       } else {
         alert("Failed to delete task");
       }
