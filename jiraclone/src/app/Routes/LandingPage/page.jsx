@@ -15,9 +15,7 @@ export default function Home() {
             <h1 className="text-4xl font-bold mb-4">Stay on Track, Stay in Control</h1>
             <p className="text-lg mb-8">Effortlessly manage tasks, track progress, and collaborate with your team.</p>
             <div className="flex justify-center gap-4">
-              <button className="bg-white text-blue-600 font-semibold py-2 px-4 rounded-lg shadow-lg" onClick={() => {
-                router.push("/Routes/login");
-              }}>
+              <button className="bg-white text-blue-600 font-semibold py-2 px-4 rounded-lg shadow-lg">
                 Get Started Free
               </button>
               <button className="bg-transparent border border-white text-white font-semibold py-2 px-4 rounded-lg">
